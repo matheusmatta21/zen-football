@@ -1,16 +1,18 @@
 import {
+  Animated,
   Image,
   ImageSourcePropType,
   Pressable,
-  Animated,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from "react-native";
 
-import { Tv } from "lucide-react-native";
 import { useRef } from "react";
+
+import { Trophy } from "lucide-react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type TeamViewProps = {
   teamName: string;
@@ -19,57 +21,97 @@ type TeamViewProps = {
 
 export default function Index() {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Image
-        source={require("../../assets/images/logo-zen-football.png")}
-        style={styles.logoHeader}
-      />
-      <MatchCard />
-      <MatchCard />
-      <MatchCard />
-      <MatchCard />
-    </ScrollView>
+    <SafeAreaView style={styles.safeArea}>
+      <Header />
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.container}
+      >
+        <MatchCard />
+        <MatchCard />
+        <MatchCard />
+        <MatchCard />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#a6a695",
+  },
+  scrollView: {
+    flex: 1,
+  },
   container: {
     flexGrow: 1,
+    width: "100%",
     alignItems: "center",
     backgroundColor: "#a6a695",
     paddingTop: 30,
     paddingBottom: 30,
     gap: 20,
   },
+  headerWrapper: {
+    backgroundColor: "#a6a695",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  headerContainer: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    marginBottom: 16,
+    backgroundColor: "#a6a695",
+  },
+  headerSlot: {
+    width: 40,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   logoHeader: {
     width: 40,
     height: 40,
+    objectFit: "contain",
+  },
+  followingMatchesText: {
+    color: "#404034",
+    fontWeight: "bold",
+    textTransform: "uppercase",
   },
   card: {
-    width: "90%",
+    width: "100%",
     backgroundColor: "#b9b9a9",
     borderRadius: 20,
     padding: 20,
     borderWidth: 1,
     borderColor: "#b4b4a5",
   },
+  cardPressable: {
+    width: "90%",
+  },
   headerCard: {
     position: "relative",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
+  },
+  dateCardHeader: {
+    position: "absolute",
+    left: 0,
+  },
+  tournamentViewCardHeader: {
     flexDirection: "row",
-    gap: 8,
+    alignItems: "center",
+    gap: 4,
   },
   logoCardHeader: {
     width: 18,
     height: 18,
-  },
-  iconHeader: {
-    width: 18,
-    height: 18,
-    position: "absolute",
-    right: 0,
   },
   logoMatchCard: {
     width: 63,
@@ -121,6 +163,31 @@ const styles = StyleSheet.create({
   },
 });
 
+function Header() {
+  return (
+    <View style={styles.headerWrapper}>
+      <View style={styles.headerContainer}>
+        <View style={styles.headerSlot}>
+          <Trophy />
+        </View>
+        <View style={styles.headerSlot}>
+          <Image
+            source={require("../../assets/images/logo-zen-football.png")}
+            style={styles.logoHeader}
+          />
+        </View>
+        <View style={styles.headerSlot}>
+          <Image
+            source={require("../../assets/images/bournemouth.png")}
+            style={styles.logoHeader}
+          />
+        </View>
+      </View>
+      <Text style={styles.followingMatchesText}>Partidas Seguintes</Text>
+    </View>
+  );
+}
+
 function MatchCard() {
   const scaleValue = useRef(new Animated.Value(1)).current; //escala 1 (100%)
 
@@ -134,13 +201,17 @@ function MatchCard() {
 
   const handlePressOut = () => {
     Animated.spring(scaleValue, {
-      toValue: 1, 
+      toValue: 1,
       useNativeDriver: true,
     }).start();
   };
 
   return (
-    <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut}>
+    <Pressable
+      style={styles.cardPressable}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+    >
       <Animated.View
         style={[styles.card, { transform: [{ scale: scaleValue }] }]}
       >
@@ -154,13 +225,13 @@ function MatchCard() {
 function HeaderCard() {
   return (
     <View style={styles.headerCard}>
-      <Image
-        source={require("../../assets/images/premier-league.png")}
-        style={styles.logoCardHeader}
-      />
-      <Text>Premier League</Text>
-      <View style={styles.iconHeader}>
-        <Tv />
+      <Text style={styles.dateCardHeader}>18/08</Text>
+      <View style={styles.tournamentViewCardHeader}>
+        <Image
+          source={require("../../assets/images/premier-league.png")}
+          style={styles.logoCardHeader}
+        />
+        <Text>Premier League</Text>
       </View>
     </View>
   );
