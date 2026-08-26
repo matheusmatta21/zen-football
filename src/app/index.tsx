@@ -1,10 +1,16 @@
 import {
   Image,
   ImageSourcePropType,
+  Pressable,
+  Animated,
+  ScrollView,
   StyleSheet,
   Text,
   View,
 } from "react-native";
+
+import { Tv } from "lucide-react-native";
+import { useRef } from "react";
 
 type TeamViewProps = {
   teamName: string;
@@ -13,41 +19,57 @@ type TeamViewProps = {
 
 export default function Index() {
   return (
-    <View style={styles.container}>
-      {/* <Image
+    <ScrollView contentContainerStyle={styles.container}>
+      <Image
         source={require("../../assets/images/logo-zen-football.png")}
         style={styles.logoHeader}
-      /> */}
+      />
       <Card />
-    </View>
+      <Card />
+      <Card />
+      <Card />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: "center",
     backgroundColor: "#a6a695",
-    paddingTop: 50,
+    paddingTop: 30,
+    paddingBottom: 30,
+    gap: 20,
+  },
+  logoHeader: {
+    width: 40,
+    height: 40,
   },
   card: {
     width: "90%",
     backgroundColor: "#b9b9a9",
-    borderRadius: 16,
+    borderRadius: 20,
     padding: 20,
     borderWidth: 1,
     borderColor: "#b4b4a5",
   },
   headerCard: {
+    position: "relative",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
     flexDirection: "row",
     gap: 8,
   },
-  logoHeader: {
+  logoCardHeader: {
     width: 18,
     height: 18,
+  },
+  iconHeader: {
+    width: 18,
+    height: 18,
+    position: "absolute",
+    right: 0,
   },
   logoMatchCard: {
     width: 63,
@@ -100,11 +122,32 @@ const styles = StyleSheet.create({
 });
 
 function Card() {
+  const scaleValue = useRef(new Animated.Value(1)).current; //escala 1 (100%)
+
+  const handlePressIn = () => {
+    Animated.spring(scaleValue, {
+      delay: 50,
+      toValue: 1.02,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scaleValue, {
+      toValue: 1, 
+      useNativeDriver: true,
+    }).start();
+  };
+
   return (
-    <View style={styles.card}>
-      <HeaderCard />
-      <MatchCard />
-    </View>
+    <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut}>
+      <Animated.View
+        style={[styles.card, { transform: [{ scale: scaleValue }] }]}
+      >
+        <HeaderCard />
+        <MatchCard />
+      </Animated.View>
+    </Pressable>
   );
 }
 
@@ -113,9 +156,12 @@ function HeaderCard() {
     <View style={styles.headerCard}>
       <Image
         source={require("../../assets/images/premier-league.png")}
-        style={styles.logoHeader}
+        style={styles.logoCardHeader}
       />
       <Text>Premier League</Text>
+      <View style={styles.iconHeader}>
+        <Tv />
+      </View>
     </View>
   );
 }
