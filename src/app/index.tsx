@@ -58,12 +58,14 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    paddingTop: 30,
   },
   headerContainer: {
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
+    gap: 40,
     marginBottom: 16,
     backgroundColor: "#a6a695",
   },
@@ -74,8 +76,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logoHeader: {
-    width: 40,
-    height: 40,
+    width: 20,
+    height: 20,
+    objectFit: "contain",
+  },
+  logoZenHeader: {
+    width: 50,
+    height: 50,
     objectFit: "contain",
   },
   followingMatchesText: {
@@ -173,7 +180,7 @@ function Header() {
         <View style={styles.headerSlot}>
           <Image
             source={require("../../assets/images/logo-zen-football.png")}
-            style={styles.logoHeader}
+            style={styles.logoZenHeader}
           />
         </View>
         <View style={styles.headerSlot}>
