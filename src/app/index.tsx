@@ -24,10 +24,10 @@ export default function Index() {
         source={require("../../assets/images/logo-zen-football.png")}
         style={styles.logoHeader}
       />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
+      <MatchCard />
+      <MatchCard />
+      <MatchCard />
+      <MatchCard />
     </ScrollView>
   );
 }
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function Card() {
+function MatchCard() {
   const scaleValue = useRef(new Animated.Value(1)).current; //escala 1 (100%)
 
   const handlePressIn = () => {
@@ -145,7 +145,7 @@ function Card() {
         style={[styles.card, { transform: [{ scale: scaleValue }] }]}
       >
         <HeaderCard />
-        <MatchCard />
+        <MatchView />
       </Animated.View>
     </Pressable>
   );
@@ -166,7 +166,7 @@ function HeaderCard() {
   );
 }
 
-function MatchCard() {
+function MatchView() {
   return (
     <View style={styles.matchCard}>
       <TeamView
