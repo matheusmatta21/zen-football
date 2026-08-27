@@ -1,27 +1,29 @@
 import { Trophy } from "lucide-react-native";
-import { View, Image, Text } from "react-native";
+import { Image, Text, View } from "react-native";
 
 export function Header() {
   return (
-    <View style={styles.headerWrapper}>
-      <View style={styles.headerContainer}>
-        <View style={styles.headerSlot}>
+    <View className="flex-col items-center justify-center bg-pitch pt-[30px]">
+      <View className="mb-4 w-full flex-row items-center justify-center gap-10 bg-pitch">
+        <View className="h-10 w-10 items-center justify-center">
           <Trophy />
         </View>
-        <View style={styles.headerSlot}>
+        <View className="h-10 w-10 items-center justify-center">
           <Image
             source={require("../../../assets/images/logo-zen-football.png")}
-            style={styles.logoZenHeader}
+            className="h-[50px] w-[50px] object-contain"
           />
         </View>
-        <View style={styles.headerSlot}>
+        <View className="h-10 w-10 items-center justify-center">
           <Image
             source={require("../../../assets/images/bournemouth.png")}
-            style={styles.logoHeader}
+            className="h-5 w-5 object-contain"
           />
         </View>
       </View>
-      <Text style={styles.followingMatchesText}>Partidas Seguintes</Text>
+      <Text className="font-bold uppercase text-heading">
+        Partidas Seguintes
+      </Text>
     </View>
   );
 }

@@ -1,19 +1,19 @@
-import { View, Image, Text } from "react-native";
+import { Image, ImageSourcePropType, Text, View } from "react-native";
 
 type TeamViewProps = {
   teamName: string;
-  teamImage: any;
+  teamImage: ImageSourcePropType;
 };
 
 export function TeamView(props: TeamViewProps) {
   return (
-    <View style={styles.teamView}>
+    <View className="flex-col items-center justify-center gap-2">
       <Image
         source={props.teamImage}
-        style={styles.logoMatchCard}
+        className="h-[63px] w-[63px]"
         resizeMode="contain"
       />
-      <Text style={styles.teamViewName}>{props.teamName}</Text>
+      <Text className="text-base font-bold">{props.teamName}</Text>
     </View>
   );
 }

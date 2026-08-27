@@ -4,7 +4,7 @@ import { ScoreboardTime } from "./ScoreboardTime";
 
 export function Scoreboard() {
   return (
-    <View style={styles.scoreboardContainer}>
+    <View className="absolute left-0 right-0 top-0 h-[63px] flex-col items-center justify-center">
       <ScoreboardGoals />
       <ScoreboardTime />
     </View>

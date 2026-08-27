@@ -1,10 +1,10 @@
 import { View } from "react-native";
-import { TeamView } from "./TeamView";
 import { Scoreboard } from "./Scoreboard";
+import { TeamView } from "./TeamView";
 
 export function MatchView() {
   return (
-    <View style={styles.matchCard}>
+    <View className="mt-4 w-full flex-row items-center justify-between">
       <TeamView
         teamName="Bournemouth"
         teamImage={require("../../../assets/images/bournemouth.png")}

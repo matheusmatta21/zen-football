@@ -1,9 +1,9 @@
-import { View, Text } from "react-native";
+import { Text, View } from "react-native";
 
 export function ScoreboardTime() {
   return (
-    <View style={styles.scoreboardTime}>
-      <Text style={styles.scoreboardTimeText}>56'</Text>
+    <View className="p-1">
+      <Text className="font-semibold text-clock">56'</Text>
     </View>
   );
 }

@@ -2,12 +2,12 @@ import { Image, Text, View } from "react-native";
 
 export function HeaderCard() {
   return (
-    <View style={styles.headerCard}>
-      <Text style={styles.dateCardHeader}>18/08</Text>
-      <View style={styles.tournamentViewCardHeader}>
+    <View className="relative mb-4 items-center justify-center">
+      <Text className="absolute left-0">18/08</Text>
+      <View className="flex-row items-center gap-1">
         <Image
           source={require("../../../assets/images/premier-league.png")}
-          style={styles.logoCardHeader}
+          className="h-[18px] w-[18px]"
         />
         <Text>Premier League</Text>
       </View>

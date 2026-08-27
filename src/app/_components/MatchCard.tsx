@@ -5,6 +5,7 @@ import { MatchView } from "./MatchView";
 
 export function MatchCard() {
   const scaleValue = useRef(new Animated.Value(1)).current; //escala 1 (100%)
+
   const handlePressIn = () => {
     Animated.spring(scaleValue, {
       delay: 50,
@@ -22,12 +23,13 @@ export function MatchCard() {
 
   return (
     <Pressable
-      style={styles.cardPressable}
+      className="w-[90%]"
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
     >
       <Animated.View
-        style={[styles.card, { transform: [{ scale: scaleValue }] }]}
+        className="w-full rounded-[20px] border border-card-border bg-card p-5"
+        style={{ transform: [{ scale: scaleValue }] }}
       >
         <HeaderCard />
         <MatchView />
