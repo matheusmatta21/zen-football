@@ -1,15 +1,20 @@
 import { Dialog } from "heroui-native";
 import { View } from "react-native";
 import TournamentOption from "./TournamentOption";
+import { TOURNAMENTS, TournamentId } from "./tournaments";
 
 type SelectTournamentDialogProps = {
   isOpen: boolean;
   onClose: () => void;
+  selectedTournamentIds: TournamentId[];
+  onToggleTournament: (tournamentId: TournamentId) => void;
 };
 
 export default function SelectTournamentDialog({
   isOpen,
   onClose,
+  selectedTournamentIds,
+  onToggleTournament,
 }: SelectTournamentDialogProps) {
   return (
     <Dialog
@@ -36,12 +41,15 @@ export default function SelectTournamentDialog({
             />
           </View>
           <View className="mt-4 flex-row flex-wrap gap-y-10">
-            <TournamentOption tournamentName="Premier League" tournamentImageSource={require("../../../assets/images/premier-league.png")} />
-            <TournamentOption tournamentName="La Liga" tournamentImageSource={require("../../../assets/images/la-liga.png")} />
-            <TournamentOption tournamentName="Brasileirão Serie A" tournamentImageSource={require("../../../assets/images/brasileirao-serie-a.png")} />
-            <TournamentOption tournamentName="Bundesliga" tournamentImageSource={require("../../../assets/images/bundesliga.png")} />
-            <TournamentOption tournamentName="Libertadores" tournamentImageSource={require("../../../assets/images/libertadores.webp")} />
-            <TournamentOption tournamentName="Sulamericana" tournamentImageSource={require("../../../assets/images/sudamericana.png")} />
+            {TOURNAMENTS.map((tournament) => (
+              <TournamentOption
+                key={tournament.id}
+                tournamentName={tournament.name}
+                tournamentImageSource={tournament.imageSource}
+                isSelected={selectedTournamentIds.includes(tournament.id)}
+                onToggle={() => onToggleTournament(tournament.id)}
+              />
+            ))}
           </View>
         </Dialog.Content>
       </Dialog.Portal>

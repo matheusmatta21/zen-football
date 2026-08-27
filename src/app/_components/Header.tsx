@@ -2,8 +2,17 @@ import { Trophy } from "lucide-react-native";
 import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import SelectTournamentDialog from "./SelectTournamentsDialog";
+import { TournamentId } from "./tournaments";
 
-export default function Header() {
+type HeaderProps = {
+  selectedTournamentIds: TournamentId[];
+  onToggleTournament: (tournamentId: TournamentId) => void;
+};
+
+export default function Header({
+  selectedTournamentIds,
+  onToggleTournament,
+}: HeaderProps) {
   const [isTournamentModalOpen, setIsTournamentModalOpen] = useState(false);
 
   return (
@@ -33,6 +42,8 @@ export default function Header() {
       <SelectTournamentDialog
         isOpen={isTournamentModalOpen}
         onClose={() => setIsTournamentModalOpen(false)}
+        selectedTournamentIds={selectedTournamentIds}
+        onToggleTournament={onToggleTournament}
       />
     </View>
   );

@@ -1,23 +1,27 @@
 import { Check } from "lucide-react-native";
-import { useState } from "react";
-import { Image, Pressable, Text, View } from "react-native";
+import { Image, ImageSourcePropType, Pressable, Text, View } from "react-native";
 
 type TournamentOptionProps = {
   tournamentName: string;
-  tournamentImageSource: any;
+  tournamentImageSource: ImageSourcePropType;
+  isSelected: boolean;
+  onToggle: () => void;
 };
 
 export default function TournamentOption({
   tournamentName,
   tournamentImageSource,
+  isSelected,
+  onToggle,
 }: TournamentOptionProps) {
-  const [isSelected, setIsSelected] = useState(false);
-
   return (
     <View className="w-1/3 flex-col items-center px-1">
       <Pressable
         className="w-full items-center"
-        onPress={() => setIsSelected((wasSelected) => !wasSelected)}
+        accessibilityRole="checkbox"
+        accessibilityState={{ checked: isSelected }}
+        accessibilityLabel={tournamentName}
+        onPress={onToggle}
       >
         <View
           data-active={isSelected}
