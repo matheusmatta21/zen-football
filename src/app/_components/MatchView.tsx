@@ -1,8 +1,9 @@
 import { View } from "react-native";
-import { Scoreboard } from "./Scoreboard";
-import { TeamView } from "./TeamView";
+import Scoreboard from "./Scoreboard";
+import TeamView from "./TeamView";
 
-export function MatchView() {
+
+export default function MatchView() {
   return (
     <View className="mt-4 w-full flex-row items-center justify-between">
       <TeamView

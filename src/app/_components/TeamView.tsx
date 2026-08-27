@@ -5,12 +5,12 @@ type TeamViewProps = {
   teamImage: ImageSourcePropType;
 };
 
-export function TeamView(props: TeamViewProps) {
+export default function TeamView(props: TeamViewProps) {
   return (
     <View className="flex-col items-center justify-center gap-2">
       <Image
         source={props.teamImage}
-        className="h-[63px] w-[63px]"
+        className="h-15.75 w-15.75"
         resizeMode="contain"
       />
       <Text className="text-base font-bold">{props.teamName}</Text>
