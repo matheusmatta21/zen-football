@@ -1,0 +1,11 @@
+@import 'tailwindcss';
+@import 'uniwind';
+
+/* Paleta do Zen Football, antes espalhada nos StyleSheet */
+@theme {
+  --color-pitch: #a6a695;
+  --color-card: #b9b9a9;
+  --color-card-border: #b4b4a5;
+  --color-heading: #404034;
+  --color-clock: #5a6777;
+}

@@ -21,6 +21,9 @@ expo-env.d.ts
 # Metro
 .metro-health-check*
 
+# Uniwind
+uniwind-types.d.ts
+
 # debug
 npm-debug.*
 yarn-debug.*
