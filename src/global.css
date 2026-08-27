@@ -1,7 +1,8 @@
 @import 'tailwindcss';
 @import 'uniwind';
 
-/* Paleta do Zen Football, antes espalhada nos StyleSheet */
+@import 'heroui-native/styles';
+
 @theme {
   --color-pitch: #a6a695;
   --color-card: #b9b9a9;
