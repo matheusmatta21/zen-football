@@ -15,7 +15,7 @@ export default function Index() {
       <Header />
       <ScrollView
         className="flex-1"
-        contentContainerClassName="grow w-full items-center gap-5 bg-pitch py-[30px]"
+        contentContainerClassName="grow w-full items-center gap-5 bg-pitch py-7.5"
       >
         <MatchCard />
         <MatchCard />
