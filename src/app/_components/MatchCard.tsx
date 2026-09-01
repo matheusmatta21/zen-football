@@ -4,12 +4,13 @@ import HeaderCard from "./HeaderCard";
 import MatchView from "./MatchView";
 
 type MatchCardProps = {
-  status: "live" | "finished";
+  status: "live" | "finished" | "upcoming";
 };
 
 const colorVariants = {
   finished: "w-full rounded-[20px] border border-card-border bg-card p-5",
-  live: "w-full rounded-[20px] border border-[#536173] bg-stone-400 p-5",
+  live: "w-full rounded-[20px] border-2 border-[#536173] bg-stone-400 p-5",
+  upcoming: "w-full rounded-[20px] border border-card-border bg-card p-5",
 };
 
 export default function MatchCard({ status }: MatchCardProps) {
@@ -41,7 +42,7 @@ export default function MatchCard({ status }: MatchCardProps) {
         style={{ transform: [{ scale: scaleValue }] }}
       >
         <HeaderCard status={status} />
-        <MatchView />
+        <MatchView status={status} />
       </Animated.View>
     </Pressable>
   );

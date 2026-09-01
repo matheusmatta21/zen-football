@@ -52,7 +52,7 @@ export default function Index() {
         contentContainerClassName="grow w-full items-center gap-5 bg-pitch py-7.5"
       >
         <MatchCard status="live" />
-        <MatchCard status="finished" />
+        <MatchCard status="upcoming" />
         <MatchCard status="finished" />
         <MatchCard status="finished" />
       </ScrollView>
