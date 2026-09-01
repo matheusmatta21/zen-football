@@ -37,12 +37,12 @@ export default function ScoreboardTime({ status }: ScoreboardTimeProps) {
   });
 
   return (
-    <View className="items-center p-1">
+    <View className="items-center">
       {status === "live" && (
         <>
           <Text className={fontVariants[status]}>56'</Text>
-          <Animated.View style={{ transform: [{ rotate }] }} className="mt-0.5">
-            <Loader2 size={20} color={"#4e5c6f"} />
+          <Animated.View style={{ transform: [{ rotate }] }}>
+            <Loader2 size={14} color={"#4e5c6f"} />
           </Animated.View>
         </>
       )}
