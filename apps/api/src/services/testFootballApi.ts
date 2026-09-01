@@ -15,3 +15,13 @@ export async function getTestMatches() {
         throw error;
     }
 }
+
+export async function getTestCompetitionFromTeam() {
+  try{
+    const response = await apiService.get(`/teams/5`)
+    return response.data.runningCompetitions;
+  } catch (error) {
+    console.error("Error fetching competition from team:", error);
+    throw error;
+  }
+}

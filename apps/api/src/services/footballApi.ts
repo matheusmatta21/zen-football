@@ -18,3 +18,16 @@ export async function getTeamMatches(
     throw error;
   }
 }
+
+export async function getCompetitionFromTeam(teamId: number) {
+  try{
+    const response = await apiService.get(`/teams/${teamId}`)
+    response.data.runningCompetitions.forEach((competition: any) => {
+      console.log(`Competition ID: ${competition.id}, Name: ${competition.name}`);
+    });
+    return response.data.runningCompetitions;
+  } catch (error) {
+    console.error("Error fetching competition from team:", error);
+    throw error;
+  }
+}

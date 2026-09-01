@@ -1,4 +1,4 @@
-import type { Match } from "@zen/types";
+import type { FdCompetition, Match } from "@zen/types";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, ScrollView, Text } from "react-native";
 
@@ -7,20 +7,19 @@ import { withUniwind } from "uniwind";
 
 import Header from "../components/Header";
 import MatchCard from "../components/MatchCard";
+import { CLUBS, ClubId } from "../components/tournaments";
 import {
-  CLUBS,
-  ClubId,
-  TOURNAMENTS,
-  TournamentId,
-} from "../components/tournaments";
-import { getTestMatches } from "../services/footballDataTest";
+  getTestCompetitions,
+  getTestMatches,
+} from "../services/footballDataTest";
 
 const StyledSafeAreaView = withUniwind(SafeAreaView);
 
 export default function Index() {
-  const [selectedTournamentIds, setSelectedTournamentIds] = useState<
-    TournamentId[]
-  >(() => TOURNAMENTS.map((tournament) => tournament.id));
+  const [competitions, setCompetitions] = useState<FdCompetition[]>([]);
+  const [selectedCompetitionIds, setSelectedCompetitionIds] = useState<
+    number[]
+  >([]);
   const [selectedClubIds, setSelectedClubIds] = useState<ClubId[]>(() =>
     CLUBS.map((club) => club.id),
   );
@@ -50,11 +49,29 @@ export default function Index() {
     return () => controller.abort();
   }, []);
 
-  const handleToggleTournament = (tournamentId: TournamentId) => {
-    setSelectedTournamentIds((currentIds) =>
-      currentIds.includes(tournamentId)
-        ? currentIds.filter((id) => id !== tournamentId)
-        : [...currentIds, tournamentId],
+  useEffect(() => {
+    const controller = new AbortController();
+
+    getTestCompetitions({ signal: controller.signal })
+      .then((fetchedCompetitions) => {
+        setCompetitions(fetchedCompetitions);
+        setSelectedCompetitionIds(
+          fetchedCompetitions.map((competition) => competition.id),
+        );
+      })
+      .catch((cause) => {
+        if (controller.signal.aborted) return;
+        console.error(cause);
+      });
+
+    return () => controller.abort();
+  }, []);
+
+  const handleToggleCompetition = (competitionId: number) => {
+    setSelectedCompetitionIds((currentIds) =>
+      currentIds.includes(competitionId)
+        ? currentIds.filter((id) => id !== competitionId)
+        : [...currentIds, competitionId],
     );
   };
 
@@ -69,8 +86,9 @@ export default function Index() {
   return (
     <StyledSafeAreaView className="flex-1 bg-pitch">
       <Header
-        selectedTournamentIds={selectedTournamentIds}
-        onToggleTournament={handleToggleTournament}
+        competitions={competitions}
+        selectedCompetitionIds={selectedCompetitionIds}
+        onToggleCompetition={handleToggleCompetition}
         selectedClubIds={selectedClubIds}
         onToggleClub={handleToggleCLub}
       />
