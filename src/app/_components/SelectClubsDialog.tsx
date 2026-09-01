@@ -1,25 +1,21 @@
 import { Dialog } from "heroui-native";
 import { View } from "react-native";
-import TournamentOption from "./TournamentOption";
-import {
-  getTournamentLogo,
-  TOURNAMENTS,
-  TournamentId,
-} from "./tournaments";
+import { CLUBS, ClubId, getClubLogo } from "./tournaments";
+import ClubOption from "./ClubOption";
 
-type SelectTournamentDialogProps = {
+type SelectClubsDialogProps = {
   isOpen: boolean;
   onClose: () => void;
-  selectedTournamentIds: TournamentId[];
-  onToggleTournament: (tournamentId: TournamentId) => void;
+  selectedClubIds: ClubId[];
+  onToggleClub: (clubId: ClubId) => void;
 };
 
-export default function SelectTournamentDialog({
+export default function SelectClubsDialog({
   isOpen,
   onClose,
-  selectedTournamentIds,
-  onToggleTournament,
-}: SelectTournamentDialogProps) {
+  selectedClubIds,
+  onToggleClub,
+}: SelectClubsDialogProps) {
   return (
     <Dialog
       isOpen={isOpen}
@@ -37,23 +33,25 @@ export default function SelectTournamentDialog({
         >
           <View className="relative flex-row items-center mb-4">
             <Dialog.Title className="text-black w-full text-center">
-              Competições
+              Clubes
             </Dialog.Title>
             <Dialog.Close
               iconProps={{ color: "black" }}
               className="absolute right-0 top-0 bg-transparent"
             />
           </View>
-          <View className="mt-4 flex-row flex-wrap gap-y-10">
-            {TOURNAMENTS.map((tournament) => (
-              <TournamentOption
-                key={tournament.id}
-                tournamentName={tournament.name}
-                tournamentImageSource={getTournamentLogo(tournament)}
-                isSelected={selectedTournamentIds.includes(tournament.id)}
-                onToggle={() => onToggleTournament(tournament.id)}
-              />
-            ))}
+          <View>
+            <View className="mt-4 flex-row flex-wrap gap-y-10">
+              {CLUBS.map((club) => (
+                <ClubOption
+                  key={club.id}
+                  clubName={club.name}
+                  clubImageSource={getClubLogo(club)}
+                  isSelected={selectedClubIds.includes(club.id)}
+                  onToggle={() => onToggleClub(club.id)}
+                />
+              ))}
+            </View>
           </View>
         </Dialog.Content>
       </Dialog.Portal>

@@ -2,18 +2,24 @@ import { Trophy } from "lucide-react-native";
 import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import SelectTournamentDialog from "./SelectTournamentsDialog";
-import { TournamentId } from "./tournaments";
+import { ClubId, TournamentId } from "./tournaments";
+import SelectClubsDialog from "./SelectClubsDialog";
 
 type HeaderProps = {
   selectedTournamentIds: TournamentId[];
   onToggleTournament: (tournamentId: TournamentId) => void;
+  selectedClubIds: ClubId[];
+  onToggleClub: (clubId: ClubId) => void;
 };
 
 export default function Header({
   selectedTournamentIds,
   onToggleTournament,
+  selectedClubIds,
+  onToggleClub,
 }: HeaderProps) {
   const [isTournamentModalOpen, setIsTournamentModalOpen] = useState(false);
+  const [isClubsModalOpen, setIsClubsModalOpen] = useState(false);
 
   return (
     <View className="flex-col items-center justify-center bg-pitch pt-7.5 pb-2">
@@ -30,10 +36,12 @@ export default function Header({
           />
         </View>
         <View className="h-10 w-10 items-center justify-center">
+          <Pressable onPress={() => setIsClubsModalOpen(true)}>
           <Image
             source={require("../../../assets/images/bournemouth.png")}
             className="h-7 w-7 object-contain"
           />
+          </Pressable>
         </View>
       </View>
       <Text className="font-semibold uppercase text-heading">
@@ -44,6 +52,12 @@ export default function Header({
         onClose={() => setIsTournamentModalOpen(false)}
         selectedTournamentIds={selectedTournamentIds}
         onToggleTournament={onToggleTournament}
+      />
+      <SelectClubsDialog
+        isOpen={isClubsModalOpen}
+        onClose={() => setIsClubsModalOpen(false)}
+        selectedClubIds={selectedClubIds}
+        onToggleClub={onToggleClub}
       />
     </View>
   );

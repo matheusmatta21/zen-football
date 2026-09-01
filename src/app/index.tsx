@@ -6,7 +6,12 @@ import { withUniwind } from "uniwind";
 
 import Header from "./_components/Header";
 import MatchCard from "./_components/MatchCard";
-import { TOURNAMENTS, TournamentId } from "./_components/tournaments";
+import {
+  CLUBS,
+  ClubId,
+  TOURNAMENTS,
+  TournamentId,
+} from "./_components/tournaments";
 
 const StyledSafeAreaView = withUniwind(SafeAreaView);
 
@@ -14,12 +19,23 @@ export default function Index() {
   const [selectedTournamentIds, setSelectedTournamentIds] = useState<
     TournamentId[]
   >(() => TOURNAMENTS.map((tournament) => tournament.id));
+  const [selectedClubIds, setSelectedClubIds] = useState<ClubId[]>(() =>
+    CLUBS.map((club) => club.id),
+  );
 
   const handleToggleTournament = (tournamentId: TournamentId) => {
     setSelectedTournamentIds((currentIds) =>
       currentIds.includes(tournamentId)
         ? currentIds.filter((id) => id !== tournamentId)
-        : [...currentIds, tournamentId]
+        : [...currentIds, tournamentId],
+    );
+  };
+
+  const handleToggleCLub = (clubId: ClubId) => {
+    setSelectedClubIds((currentIds) =>
+      currentIds.includes(clubId)
+        ? currentIds.filter((id) => id !== clubId)
+        : [...currentIds, clubId],
     );
   };
 
@@ -28,6 +44,8 @@ export default function Index() {
       <Header
         selectedTournamentIds={selectedTournamentIds}
         onToggleTournament={handleToggleTournament}
+        selectedClubIds={selectedClubIds}
+        onToggleClub={handleToggleCLub}
       />
       <ScrollView
         className="flex-1"
