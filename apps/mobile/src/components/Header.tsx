@@ -31,14 +31,14 @@ export default function Header({
         </View>
         <View className="h-10 w-10 items-center justify-center">
           <Image
-            source={require("../../../assets/images/logo-zen-football.png")}
+            source={require("../../assets/images/logo-zen-football.png")}
             className="h-12.5 w-12.5 object-contain"
           />
         </View>
         <View className="h-10 w-10 items-center justify-center">
           <Pressable onPress={() => setIsClubsModalOpen(true)}>
           <Image
-            source={require("../../../assets/images/bournemouth.png")}
+            source={require("../../assets/images/bournemouth.png")}
             className="h-7 w-7 object-contain"
           />
           </Pressable>

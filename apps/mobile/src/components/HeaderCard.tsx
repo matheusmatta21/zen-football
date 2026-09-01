@@ -22,7 +22,7 @@ export default function HeaderCard({ status }: HeaderCardProps) {
       <Text className={`absolute left-0 ${fontVariants[status]}`}>18/08</Text>
       <View className="flex-row items-center gap-1">
         <Image
-          source={require("../../../assets/images/premier-league.png")}
+          source={require("../../assets/images/premier-league.png")}
           className={imageSizeVariants[status]}
         />
         <Text className={fontVariants[status]}>Premier League</Text>

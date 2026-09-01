@@ -13,14 +13,14 @@ export default function MatchView({ status }: MatchViewProps) {
     <View className="mt-4 w-full flex-row items-center justify-between">
       <TeamView
         teamName="Bournemouth"
-        teamImage={require("../../../assets/images/bournemouth.png")}
+        teamImage={require("../../assets/images/bournemouth.png")}
         status={status}
       />
       <Scoreboard status={status}/>
 
       <TeamView
         teamName="Chelsea"
-        teamImage={require("../../../assets/images/chelsea.webp")}
+        teamImage={require("../../assets/images/chelsea.webp")}
         status={status}
       />
     </View>

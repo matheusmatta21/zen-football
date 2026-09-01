@@ -4,14 +4,14 @@ import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { withUniwind } from "uniwind";
 
-import Header from "./_components/Header";
-import MatchCard from "./_components/MatchCard";
+import Header from "../components/Header";
+import MatchCard from "../components/MatchCard";
 import {
   CLUBS,
   ClubId,
   TOURNAMENTS,
   TournamentId,
-} from "./_components/tournaments";
+} from "../components/tournaments";
 
 const StyledSafeAreaView = withUniwind(SafeAreaView);
 

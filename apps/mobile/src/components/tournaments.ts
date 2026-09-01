@@ -63,17 +63,17 @@ export type TournamentWithClubs = Tournament & { clubs: Club[] };
 export type ClubWithTournaments = Club & { tournaments: Tournament[] };
 
 export const TOURNAMENT_LOGOS: Record<TournamentId, ImageSourcePropType> = {
-  "premier-league": require("../../../assets/images/premier-league.png"),
-  "la-liga": require("../../../assets/images/la-liga.png"),
-  "brasileirao-serie-a": require("../../../assets/images/brasileirao-serie-a.png"),
-  bundesliga: require("../../../assets/images/bundesliga.png"),
-  libertadores: require("../../../assets/images/libertadores.webp"),
-  sulamericana: require("../../../assets/images/sudamericana.png"),
+  "premier-league": require("../../assets/images/premier-league.png"),
+  "la-liga": require("../../assets/images/la-liga.png"),
+  "brasileirao-serie-a": require("../../assets/images/brasileirao-serie-a.png"),
+  bundesliga: require("../../assets/images/bundesliga.png"),
+  libertadores: require("../../assets/images/libertadores.webp"),
+  sulamericana: require("../../assets/images/sudamericana.png"),
 };
 
 export const CLUB_LOGOS: Record<ClubId, ImageSourcePropType> = {
-  bournemouth: require("../../../assets/images/bournemouth.png"),
-  chelsea: require("../../../assets/images/chelsea.webp"),
+  bournemouth: require("../../assets/images/bournemouth.png"),
+  chelsea: require("../../assets/images/chelsea.webp"),
 };
 
 export function getTournamentLogo(tournament: Tournament): ImageSourcePropType {
