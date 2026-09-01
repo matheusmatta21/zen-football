@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@zen/types": "*",
+    "axios": "^1.20.0",
     "express": "^5.1.0"
   },
   "devDependencies": {
