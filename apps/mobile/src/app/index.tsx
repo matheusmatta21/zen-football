@@ -13,7 +13,7 @@ import {
   TOURNAMENTS,
   TournamentId,
 } from "../components/tournaments";
-import { getBournemouthMatches } from "../services/footballDataTest";
+import { getTestMatches } from "../services/footballDataTest";
 
 const StyledSafeAreaView = withUniwind(SafeAreaView);
 
@@ -35,7 +35,7 @@ export default function Index() {
     setIsLoading(true);
     setError(null);
 
-    getBournemouthMatches({ signal: controller.signal })
+    getTestMatches({ signal: controller.signal })
       .then(setMatches)
       .catch((cause) => {
         if (controller.signal.aborted) return;

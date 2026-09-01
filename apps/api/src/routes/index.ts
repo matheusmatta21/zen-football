@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { getTeamMatchesController } from "../controllers/match";
-import { getBournemouthMatchesController } from "../controllers/testMatch";
+import { getTestMatchesController } from "../controllers/testMatch";
 
 const router = Router();
 
 router.get("/matches", getTeamMatchesController);
-router.get("/bournemouth/matches", getBournemouthMatchesController);
+router.get("/test/matches", getTestMatchesController);
 
 export default router;
