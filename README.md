@@ -23,6 +23,12 @@ npm start            # atalho para: npm start -w mobile
 
 Outros atalhos da raiz: `npm run ios`, `npm run android`, `npm run web`, `npm run lint`.
 
+> **Não rode `npx expo start` na raiz.** A raiz é só a coordenadora e não tem
+> `main` no `package.json`, então o Expo cai no fallback antigo
+> (`expo/AppEntry.js`) e falha com `Unable to resolve "../../App"`. Use os
+> atalhos da raiz ou entre em `apps/mobile/`. Se isso acontecer, apague o
+> `.expo/` que ficou na raiz.
+
 ## Trabalhando nos workspaces
 
 A flag `-w` escolhe o projeto:
