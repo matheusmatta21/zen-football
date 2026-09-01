@@ -1,9 +1,10 @@
+import type { Match } from "@zen/types";
 import { Loader2 } from "lucide-react-native";
 import { useEffect, useRef } from "react";
 import { Animated, Text, View } from "react-native";
 
 type ScoreboardTimeProps = {
-  status: "live" | "finished" | "upcoming";
+  match: Match;
 };
 
 const fontVariants = {
@@ -12,7 +13,8 @@ const fontVariants = {
   upcoming: "text-xs font-bold text-clock",
 };
 
-export default function ScoreboardTime({ status }: ScoreboardTimeProps) {
+export default function ScoreboardTime({ match }: ScoreboardTimeProps) {
+  const { status } = match;
   const spinValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -40,7 +42,9 @@ export default function ScoreboardTime({ status }: ScoreboardTimeProps) {
     <View className="items-center">
       {status === "live" && (
         <>
-          <Text className={fontVariants[status]}>56'</Text>
+          <Text className={fontVariants[status]}>
+            {match.minute !== null ? `${match.minute}'` : "AO VIVO"}
+          </Text>
           <Animated.View style={{ transform: [{ rotate }] }}>
             <Loader2 size={14} color={"#4e5c6f"} />
           </Animated.View>

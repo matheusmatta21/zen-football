@@ -1,9 +1,10 @@
+import type { MatchStatus } from "@zen/types";
 import { Image, ImageSourcePropType, Text, View } from "react-native";
 
 type TeamViewProps = {
   teamName: string;
-  teamImage: ImageSourcePropType;
-  status: "live" | "finished" | "upcoming";
+  teamImage: ImageSourcePropType | null;
+  status: MatchStatus;
 };
 
 const sizeVariants = {
@@ -21,11 +22,15 @@ const fontVariants = {
 export default function TeamView(props: TeamViewProps) {
   return (
     <View className="flex-col items-center justify-center gap-2">
-      <Image
-        source={props.teamImage}
-        className={sizeVariants[props.status]}
-        resizeMode="contain"
-      />
+      {props.teamImage ? (
+        <Image
+          source={props.teamImage}
+          className={sizeVariants[props.status]}
+          resizeMode="contain"
+        />
+      ) : (
+        <View className={sizeVariants[props.status]} />
+      )}
       <Text className={fontVariants[props.status]}>{props.teamName}</Text>
     </View>
   );

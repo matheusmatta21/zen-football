@@ -1,7 +1,8 @@
+import { hasScore, type Match } from "@zen/types";
 import { Text, View } from "react-native";
 
 type ScoreboardGoalsProps = {
-  status: "live" | "finished" | "upcoming";
+  match: Match;
 };
 
 const goalFontVariants = {
@@ -16,27 +17,19 @@ const xFontVariants = {
   upcoming: "text-lg",
 };
 
-export default function ScoreboardGoals({ status }: ScoreboardGoalsProps) {
+export default function ScoreboardGoals({ match }: ScoreboardGoalsProps) {
+  const { status } = match;
+
   return (
     <View className="flex-row items-center justify-center gap-2">
-      {status === "live" && (
+      {hasScore(match) ? (
         <>
-          <Text className={goalFontVariants[status]}>2</Text>
+          <Text className={goalFontVariants[status]}>{match.homeGoals}</Text>
           <Text className={xFontVariants[status]}>x</Text>
-          <Text className={goalFontVariants[status]}>2</Text>
+          <Text className={goalFontVariants[status]}>{match.awayGoals}</Text>
         </>
-      )}
-      {status === "finished" && (
-        <>
-          <Text className={goalFontVariants[status]}>1</Text>
-          <Text className={xFontVariants[status]}>x</Text>
-          <Text className={goalFontVariants[status]}>0</Text>
-        </>
-      )}
-      {status === "upcoming" && (
-        <>
-          <Text className={xFontVariants[status]}>VS</Text>
-        </>
+      ) : (
+        <Text className={xFontVariants[status]}>VS</Text>
       )}
     </View>
   );

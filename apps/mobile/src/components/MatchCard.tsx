@@ -1,10 +1,11 @@
+import type { Match } from "@zen/types";
 import { useRef } from "react";
 import { Animated, Pressable } from "react-native";
 import HeaderCard from "./HeaderCard";
 import MatchView from "./MatchView";
 
 type MatchCardProps = {
-  status: "live" | "finished" | "upcoming";
+  match: Match;
 };
 
 const colorVariants = {
@@ -13,7 +14,7 @@ const colorVariants = {
   upcoming: "w-full rounded-[20px] border border-card-border bg-card p-5",
 };
 
-export default function MatchCard({ status }: MatchCardProps) {
+export default function MatchCard({ match }: MatchCardProps) {
   const scaleValue = useRef(new Animated.Value(1)).current; //escala 1 (100%)
 
   const handlePressIn = () => {
@@ -38,11 +39,11 @@ export default function MatchCard({ status }: MatchCardProps) {
       onPressOut={handlePressOut}
     >
       <Animated.View
-        className={colorVariants[status]}
+        className={colorVariants[match.status]}
         style={{ transform: [{ scale: scaleValue }] }}
       >
-        <HeaderCard status={status} />
-        <MatchView status={status} />
+        <HeaderCard match={match} />
+        <MatchView match={match} />
       </Animated.View>
     </Pressable>
   );

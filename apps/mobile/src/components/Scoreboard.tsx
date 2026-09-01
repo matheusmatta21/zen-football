@@ -1,9 +1,10 @@
+import type { Match } from "@zen/types";
 import { View } from "react-native";
 import ScoreboardGoals from "./ScoreboardGoals";
 import ScoreboardTime from "./ScoreboardTime";
 
 type ScoreboardProps = {
-  status: "live" | "finished" | "upcoming";
+  match: Match;
 };
 
 const crestHeightVariants = {
@@ -12,13 +13,13 @@ const crestHeightVariants = {
   upcoming: "h-8",
 };
 
-export default function Scoreboard({ status }: ScoreboardProps) {
+export default function Scoreboard({ match }: ScoreboardProps) {
   return (
     <View className="absolute left-0 right-0 top-0 flex-col items-center gap-0.5">
-      <View className={`${crestHeightVariants[status]} justify-center`}>
-        <ScoreboardGoals status={status} />
+      <View className={`${crestHeightVariants[match.status]} justify-center`}>
+        <ScoreboardGoals match={match} />
       </View>
-      <ScoreboardTime status={status} />
+      <ScoreboardTime match={match} />
     </View>
   );
 }

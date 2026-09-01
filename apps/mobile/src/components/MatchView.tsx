@@ -1,27 +1,31 @@
-import { View } from "react-native";
+import type { Match, MatchTeam } from "@zen/types";
+import { ImageSourcePropType, View } from "react-native";
 import Scoreboard from "./Scoreboard";
 import TeamView from "./TeamView";
 
 type MatchViewProps = {
-  status: "live" | "finished" | "upcoming"
+  match: Match;
 };
 
+/** O escudo vem como URL da football-data; sem ela, o card fica sem imagem. */
+function crestSource(team: MatchTeam): ImageSourcePropType | null {
+  return team.crestUrl ? { uri: team.crestUrl } : null;
+}
 
-
-export default function MatchView({ status }: MatchViewProps) {
+export default function MatchView({ match }: MatchViewProps) {
   return (
     <View className="mt-4 w-full flex-row items-center justify-between">
       <TeamView
-        teamName="Bournemouth"
-        teamImage={require("../../assets/images/bournemouth.png")}
-        status={status}
+        teamName={match.homeTeam.name ?? "A definir"}
+        teamImage={crestSource(match.homeTeam)}
+        status={match.status}
       />
-      <Scoreboard status={status}/>
+      <Scoreboard match={match} />
 
       <TeamView
-        teamName="Chelsea"
-        teamImage={require("../../assets/images/chelsea.webp")}
-        status={status}
+        teamName={match.awayTeam.name ?? "A definir"}
+        teamImage={crestSource(match.awayTeam)}
+        status={match.status}
       />
     </View>
   );

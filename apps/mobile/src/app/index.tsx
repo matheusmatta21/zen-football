@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { ScrollView } from "react-native";
+import type { Match } from "@zen/types";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, ScrollView, Text } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { withUniwind } from "uniwind";
@@ -12,6 +13,7 @@ import {
   TOURNAMENTS,
   TournamentId,
 } from "../components/tournaments";
+import { getBournemouthMatches } from "../services/footballDataTest";
 
 const StyledSafeAreaView = withUniwind(SafeAreaView);
 
@@ -22,6 +24,31 @@ export default function Index() {
   const [selectedClubIds, setSelectedClubIds] = useState<ClubId[]>(() =>
     CLUBS.map((club) => club.id),
   );
+
+  const [matches, setMatches] = useState<Match[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    setIsLoading(true);
+    setError(null);
+
+    getBournemouthMatches({ signal: controller.signal })
+      .then(setMatches)
+      .catch((cause) => {
+        if (controller.signal.aborted) return;
+        setError("Não foi possível carregar os jogos.");
+        console.error(cause);
+      })
+      .finally(() => {
+        if (controller.signal.aborted) return;
+        setIsLoading(false);
+      });
+
+    return () => controller.abort();
+  }, []);
 
   const handleToggleTournament = (tournamentId: TournamentId) => {
     setSelectedTournamentIds((currentIds) =>
@@ -51,10 +78,13 @@ export default function Index() {
         className="flex-1"
         contentContainerClassName="grow w-full items-center gap-5 bg-pitch py-7.5"
       >
-        <MatchCard status="live" />
-        <MatchCard status="upcoming" />
-        <MatchCard status="finished" />
-        <MatchCard status="finished" />
+        {isLoading && <ActivityIndicator size="large" color="#4e5c6f" />}
+
+        {error && <Text className="text-sm font-medium text-clock">{error}</Text>}
+
+        {!isLoading &&
+          !error &&
+          matches.map((match) => <MatchCard key={match.id} match={match} />)}
       </ScrollView>
     </StyledSafeAreaView>
   );
