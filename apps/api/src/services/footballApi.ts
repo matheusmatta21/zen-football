@@ -1,3 +1,4 @@
+import { FdCompetition, FdMatchesResponse } from "@zen/types";
 import apiService from "./apiService";
 
 export async function getTeamMatches(
@@ -6,12 +7,15 @@ export async function getTeamMatches(
   status?: string,
 ) {
   try {
-    const response = await apiService.get(`/teams/${teamId}/matches`, {
-      params: {
-        season: season,
-        status: status,
+    const response = await apiService.get<FdMatchesResponse>(
+      `/teams/${teamId}/matches`,
+      {
+        params: {
+          season: season,
+          status: status,
+        },
       },
-    });
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching team matches:", error);
@@ -20,11 +24,10 @@ export async function getTeamMatches(
 }
 
 export async function getCompetitionFromTeam(teamId: number) {
-  try{
-    const response = await apiService.get(`/teams/${teamId}`)
-    response.data.runningCompetitions.forEach((competition: any) => {
-      console.log(`Competition ID: ${competition.id}, Name: ${competition.name}`);
-    });
+  try {
+    const response = await apiService.get<{
+      runningCompetitions: FdCompetition[];
+    }>(`/teams/${teamId}`);
     return response.data.runningCompetitions;
   } catch (error) {
     console.error("Error fetching competition from team:", error);
