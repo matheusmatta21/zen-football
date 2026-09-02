@@ -7,6 +7,7 @@ type MatchNote = "postponed" | "cancelled" | "suspended" | "awarded";
 type MatchTeam = {
   id: number | null;
   name: string | null;
+  shortName?: string | null;
   crestUrl: string | null;
 };
 
@@ -77,6 +78,7 @@ function toMatchTeam(team: FdMatch["homeTeam"]): MatchTeam {
   return {
     id: team.id,
     name: team.shortName ?? team.name,
+    shortName: team.shortName,
     crestUrl: team.crest,
   };
 }

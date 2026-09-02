@@ -4,7 +4,7 @@ import { Trophy } from "lucide-react-native";
 import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import SelectClubsDialog from "./SelectClubsDialog";
-import { ClubId } from "./tournaments";
+import { ClubId, getCompetitionEmblem } from "./tournaments";
 
 type HeaderProps = {
   competitions: FdCompetition[];
@@ -36,8 +36,9 @@ export default function Header({
               <Menu.Content
                 presentation="popover"
                 width={240}
-                align="start"
+                align="center"
                 offset={8}
+                className="bg-clock"
               >
                 <Menu.Label className="mb-1">Competições</Menu.Label>
                 {competitions.length === 0 ? (
@@ -45,30 +46,34 @@ export default function Header({
                     <Menu.ItemTitle>Nenhuma competição</Menu.ItemTitle>
                   </Menu.Item>
                 ) : (
-                  competitions.map((competition) => (
-                    <Menu.Item
-                      key={competition.id}
-                      shouldCloseOnSelect={false}
-                      isSelected={selectedCompetitionIds.includes(
-                        competition.id,
-                      )}
-                      onSelectedChange={() =>
-                        onToggleCompetition(competition.id)
-                      }
-                    >
-                      <Menu.ItemIndicator />
-                      {competition.emblem ? (
-                        <Image
-                          source={{ uri: competition.emblem }}
-                          className="h-5 w-5"
-                          resizeMode="contain"
-                        />
-                      ) : (
-                        <View className="h-5 w-5" />
-                      )}
-                      <Menu.ItemTitle>{competition.name}</Menu.ItemTitle>
-                    </Menu.Item>
-                  ))
+                  competitions.map((competition) => {
+                    const competitionEmblem = getCompetitionEmblem(competition);
+
+                    return (
+                      <Menu.Item
+                        key={competition.id}
+                        shouldCloseOnSelect={false}
+                        isSelected={selectedCompetitionIds.includes(
+                          competition.id,
+                        )}
+                        onSelectedChange={() =>
+                          onToggleCompetition(competition.id)
+                        }
+                      >
+                        <Menu.ItemIndicator />
+                        {competitionEmblem ? (
+                          <Image
+                            source={competitionEmblem}
+                            className="h-5 w-5"
+                            resizeMode="contain"
+                          />
+                        ) : (
+                          <View className="h-5 w-5" />
+                        )}
+                        <Menu.ItemTitle>{competition.name}</Menu.ItemTitle>
+                      </Menu.Item>
+                    );
+                  })
                 )}
               </Menu.Content>
             </Menu.Portal>
@@ -82,10 +87,10 @@ export default function Header({
         </View>
         <View className="h-10 w-10 items-center justify-center">
           <Pressable onPress={() => setIsClubsModalOpen(true)}>
-          <Image
-            source={require("../../assets/images/bournemouth.png")}
-            className="h-7 w-7 object-contain"
-          />
+            <Image
+              source={require("../../assets/images/bournemouth.png")}
+              className="h-7 w-7 object-contain"
+            />
           </Pressable>
         </View>
       </View>

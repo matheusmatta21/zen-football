@@ -11,6 +11,7 @@ export const TOURNAMENTS = [
   { id: "la-liga", name: "La Liga", logoUrl: null },
   { id: "brasileirao-serie-a", name: "Brasileirão Serie A", logoUrl: null },
   { id: "bundesliga", name: "Bundesliga", logoUrl: null },
+  { id: "uefa-champions-league", name: "UEFA Champions League", logoUrl: null },
 ] as const satisfies readonly CatalogEntry[];
 
 export const CLUBS = [
@@ -64,13 +65,38 @@ export const TOURNAMENT_LOGOS: Record<TournamentId, ImageSourcePropType> = {
   "premier-league": require("../../assets/images/premier-league.png"),
   "la-liga": require("../../assets/images/la-liga.png"),
   "brasileirao-serie-a": require("../../assets/images/brasileirao-serie-a.png"),
-  "bundesliga": require("../../assets/images/bundesliga.png"),
+  bundesliga: require("../../assets/images/bundesliga.png"),
+  "uefa-champions-league": require("../../assets/images/uefa-champions-league.png"),
 };
 
 export const CLUB_LOGOS: Record<ClubId, ImageSourcePropType> = {
   bournemouth: require("../../assets/images/bournemouth.png"),
   chelsea: require("../../assets/images/chelsea.webp"),
 };
+
+function normalizeTournamentId(value: string): string {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export function getCompetitionEmblem(competition: {
+  name: string;
+  emblem?: string | null;
+}): ImageSourcePropType | null {
+  const normalizedName = normalizeTournamentId(competition.name);
+
+  for (const [tournamentId, logo] of Object.entries(TOURNAMENT_LOGOS)) {
+    if (normalizeTournamentId(tournamentId) === normalizedName) {
+      return logo;
+    }
+  }
+
+  return competition.emblem ? { uri: competition.emblem } : null;
+}
 
 export function getTournamentLogo(tournament: Tournament): ImageSourcePropType {
   return tournament.logoUrl
@@ -96,7 +122,6 @@ export function getClubsByTournament(
 
   return CLUBS.filter((club) => clubIds.has(club.id));
 }
-
 export function getTournamentsByClub(
   clubId: ClubId,
   season: Season | undefined = CURRENT_SEASON,

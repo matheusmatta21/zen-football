@@ -7,7 +7,6 @@ type MatchViewProps = {
   match: Match;
 };
 
-/** O escudo vem como URL da football-data; sem ela, o card fica sem imagem. */
 function crestSource(team: MatchTeam): ImageSourcePropType | null {
   return team.crestUrl ? { uri: team.crestUrl } : null;
 }
@@ -16,14 +15,18 @@ export default function MatchView({ match }: MatchViewProps) {
   return (
     <View className="mt-4 w-full flex-row items-center justify-between">
       <TeamView
-        teamName={match.homeTeam.name ?? "A definir"}
+        teamName={
+          match.homeTeam.shortName ?? match.homeTeam.name ?? "A definir"
+        }
         teamImage={crestSource(match.homeTeam)}
         status={match.status}
       />
       <Scoreboard match={match} />
 
       <TeamView
-        teamName={match.awayTeam.name ?? "A definir"}
+        teamName={
+          match.awayTeam.shortName ?? match.awayTeam.name ?? "A definir"
+        }
         teamImage={crestSource(match.awayTeam)}
         status={match.status}
       />

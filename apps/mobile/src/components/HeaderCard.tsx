@@ -1,5 +1,6 @@
 import type { Match } from "@zen/types";
 import { Image, Text, View } from "react-native";
+import { getCompetitionEmblem } from "./tournaments";
 
 type HeaderCardProps = {
   match: Match;
@@ -7,14 +8,14 @@ type HeaderCardProps = {
 
 const fontVariants = {
   live: "text-sm font-bold text-clock",
-  finished: "text-xs font-medium text-clock",
-  upcoming: "text-xs font-medium text-clock",
+  finished: "text-sm font-medium text-clock",
+  upcoming: "text-sm font-medium text-clock",
 };
 
 const imageSizeVariants = {
   live: "h-4.5 w-4.5",
-  finished: "h-3.5 w-3.5",
-  upcoming: "h-3.5 w-3.5",
+  finished: "h-4.5 w-4.5",
+  upcoming: "h-4.5 w-4.5",
 };
 
 function formatKickoffDate(kickoffUtc: string): string {
@@ -34,10 +35,17 @@ export default function HeaderCard({ match }: HeaderCardProps) {
       </Text>
       <View className="flex-row items-center gap-1">
         {competition.emblemUrl && (
-          <Image
-            source={{ uri: competition.emblemUrl }}
-            className={imageSizeVariants[status]}
-          />
+          getCompetitionEmblem(competition) ? (
+            <Image
+              source={getCompetitionEmblem(competition)!}
+              className={imageSizeVariants[status]}
+            />
+          ) : (
+            <Image
+              source={{ uri: competition.emblemUrl }}
+              className={imageSizeVariants[status]}
+            />
+          )
         )}
         <Text className={fontVariants[status]}>{competition.name}</Text>
       </View>
