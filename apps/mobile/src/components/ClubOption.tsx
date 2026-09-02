@@ -3,7 +3,7 @@ import { Image, ImageSourcePropType, Pressable, Text, View } from "react-native"
 
 type ClubOptionProps = {
   clubName: string;
-  clubImageSource: ImageSourcePropType;
+  clubImageSource: ImageSourcePropType | null;
   isSelected: boolean;
   onSelect: () => void;
 };
@@ -27,10 +27,14 @@ export default function ClubOption({
           data-active={isSelected}
           className="relative aspect-square w-full items-center justify-center rounded-lg border-2 border-transparent bg-[#b5b5a5] p-2 data-active:border-border data-active:bg-[#b1b1a1]"
         >
-          <Image
-            source={clubImageSource}
-            className="h-11 w-11 object-contain"
-          />
+          {clubImageSource ? (
+            <Image
+              source={clubImageSource}
+              className="h-11 w-11 object-contain"
+            />
+          ) : (
+            <View className="h-11 w-11" />
+          )}
           {isSelected && (
             <View className="absolute right-1 top-1">
               <Check width={14} height={14} strokeWidth={2.5} color="#404034" />

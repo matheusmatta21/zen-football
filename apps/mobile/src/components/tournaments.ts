@@ -19,16 +19,34 @@ type ClubCatalogEntry = CatalogEntry & { teamId: number };
 export const CLUBS = [
   { id: "bournemouth", name: "Bournemouth", logoUrl: null, teamId: 1044 },
   { id: "chelsea", name: "Chelsea", logoUrl: null, teamId: 61 },
+  {
+    id: "arsenal",
+    name: "Arsenal",
+    logoUrl: "https://crests.football-data.org/57.png",
+    teamId: 57,
+  },
+  {
+    id: "barcelona",
+    name: "Barcelona",
+    logoUrl: "https://crests.football-data.org/81.png",
+    teamId: 81,
+  },
+  {
+    id: "borussia-dortmund",
+    name: "Borussia Dortmund",
+    logoUrl: "https://crests.football-data.org/4.png",
+    teamId: 4,
+  },
+  {
+    id: "juventus",
+    name: "Juventus",
+    logoUrl: "https://crests.football-data.org/109.png",
+    teamId: 109,
+  },
 ] as const satisfies readonly ClubCatalogEntry[];
 
 export type TournamentId = (typeof TOURNAMENTS)[number]["id"];
 export type ClubId = (typeof CLUBS)[number]["id"];
-
-export type Tournament = {
-  id: TournamentId;
-  name: string;
-  logoUrl: string | null;
-};
 
 export type Club = {
   id: ClubId;
@@ -36,32 +54,6 @@ export type Club = {
   logoUrl: string | null;
   teamId: number;
 };
-
-export type Season = string;
-
-export const CURRENT_SEASON: Season = "2025/26";
-
-export type ClubTournament = {
-  clubId: ClubId;
-  tournamentId: TournamentId;
-  season: Season;
-};
-
-export const CLUB_TOURNAMENTS: ClubTournament[] = [
-  {
-    clubId: "bournemouth",
-    tournamentId: "premier-league",
-    season: CURRENT_SEASON,
-  },
-  {
-    clubId: "chelsea",
-    tournamentId: "premier-league",
-    season: CURRENT_SEASON,
-  },
-];
-
-export type TournamentWithClubs = Tournament & { clubs: Club[] };
-export type ClubWithTournaments = Club & { tournaments: Tournament[] };
 
 export const TOURNAMENT_LOGOS: Record<TournamentId, ImageSourcePropType> = {
   "premier-league": require("../../assets/images/premier-league.png"),
@@ -71,7 +63,8 @@ export const TOURNAMENT_LOGOS: Record<TournamentId, ImageSourcePropType> = {
   "uefa-champions-league": require("../../assets/images/uefa-champions-league.png"),
 };
 
-export const CLUB_LOGOS: Record<ClubId, ImageSourcePropType> = {
+/** Escudos empacotados no app. Clubes fora daqui usam o `logoUrl` remoto. */
+export const CLUB_LOGOS: Partial<Record<ClubId, ImageSourcePropType>> = {
   bournemouth: require("../../assets/images/bournemouth.png"),
   chelsea: require("../../assets/images/chelsea.webp"),
 };
@@ -100,41 +93,7 @@ export function getCompetitionEmblem(competition: {
   return competition.emblem ? { uri: competition.emblem } : null;
 }
 
-export function getTournamentLogo(tournament: Tournament): ImageSourcePropType {
-  return tournament.logoUrl
-    ? { uri: tournament.logoUrl }
-    : TOURNAMENT_LOGOS[tournament.id];
-}
 
-export function getClubLogo(club: Club): ImageSourcePropType {
-  return club.logoUrl ? { uri: club.logoUrl } : CLUB_LOGOS[club.id];
-}
-
-export function getClubsByTournament(
-  tournamentId: TournamentId,
-  season: Season | undefined = CURRENT_SEASON,
-): Club[] {
-  const clubIds = new Set(
-    CLUB_TOURNAMENTS.filter(
-      (relation) =>
-        relation.tournamentId === tournamentId &&
-        (season === undefined || relation.season === season),
-    ).map((relation) => relation.clubId),
-  );
-
-  return CLUBS.filter((club) => clubIds.has(club.id));
-}
-export function getTournamentsByClub(
-  clubId: ClubId,
-  season: Season | undefined = CURRENT_SEASON,
-): Tournament[] {
-  const tournamentIds = new Set(
-    CLUB_TOURNAMENTS.filter(
-      (relation) =>
-        relation.clubId === clubId &&
-        (season === undefined || relation.season === season),
-    ).map((relation) => relation.tournamentId),
-  );
-
-  return TOURNAMENTS.filter((tournament) => tournamentIds.has(tournament.id));
+export function getClubLogo(club: Club): ImageSourcePropType | null {
+  return club.logoUrl ? { uri: club.logoUrl } : (CLUB_LOGOS[club.id] ?? null);
 }

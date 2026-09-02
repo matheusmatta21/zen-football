@@ -28,6 +28,8 @@ export default function Header({
 }: HeaderProps) {
   const [isClubsModalOpen, setIsClubsModalOpen] = useState(false);
 
+  const selectedClubLogo = getClubLogo(selectedClub);
+
   return (
     <View className="flex-col items-center justify-center bg-pitch pt-7.5 pb-2">
       <View className="mb-4 w-full flex-row items-center justify-center gap-10 bg-pitch">
@@ -95,10 +97,14 @@ export default function Header({
             accessibilityLabel={`Clube: ${selectedClub.name}`}
             onPress={() => setIsClubsModalOpen(true)}
           >
-            <Image
-              source={getClubLogo(selectedClub)}
-              className="h-7 w-7 object-contain"
-            />
+            {selectedClubLogo ? (
+              <Image
+                source={selectedClubLogo}
+                className="h-7 w-7 object-contain"
+              />
+            ) : (
+              <View className="h-7 w-7" />
+            )}
           </Pressable>
         </View>
       </View>
