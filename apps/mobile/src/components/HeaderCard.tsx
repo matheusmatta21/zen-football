@@ -47,7 +47,11 @@ export default function HeaderCard({ match }: HeaderCardProps) {
             />
           )
         )}
-        <Text className={fontVariants[status]}>{competition.name}</Text>
+        {competition.name === 'Primera Division' ? (
+          <Text className={fontVariants[status]}>La Liga</Text>
+        ) : (
+          <Text className={fontVariants[status]}>{competition.name}</Text>
+        )}
       </View>
       {status === "live" && (
         <Text className="absolute right-0 font-medium text-slate-800">
