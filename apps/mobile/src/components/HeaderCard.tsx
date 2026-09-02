@@ -1,6 +1,6 @@
 import type { Match } from "@zen/types";
 import { Image, Text, View } from "react-native";
-import { getCompetitionEmblem } from "./tournaments";
+import { getCompetitionEmblem, getTournamentName } from "./tournaments";
 
 type HeaderCardProps = {
   match: Match;
@@ -27,6 +27,7 @@ function formatKickoffDate(kickoffUtc: string): string {
 
 export default function HeaderCard({ match }: HeaderCardProps) {
   const { status, competition } = match;
+  const competitionEmblem = getCompetitionEmblem(competition);
 
   return (
     <View className="relative mb-4 items-center justify-center">
@@ -34,24 +35,15 @@ export default function HeaderCard({ match }: HeaderCardProps) {
         {formatKickoffDate(match.kickoffUtc)}
       </Text>
       <View className="flex-row items-center gap-1">
-        {competition.emblemUrl && (
-          getCompetitionEmblem(competition) ? (
-            <Image
-              source={getCompetitionEmblem(competition)!}
-              className={imageSizeVariants[status]}
-            />
-          ) : (
-            <Image
-              source={{ uri: competition.emblemUrl }}
-              className={imageSizeVariants[status]}
-            />
-          )
+        {competitionEmblem && (
+          <Image
+            source={competitionEmblem}
+            className={imageSizeVariants[status]}
+          />
         )}
-        {competition.name === 'Primera Division' ? (
-          <Text className={fontVariants[status]}>La Liga</Text>
-        ) : (
-          <Text className={fontVariants[status]}>{competition.name}</Text>
-        )}
+        <Text className={fontVariants[status]}>
+          {getTournamentName(competition)}
+        </Text>
       </View>
       {status === "live" && (
         <Text className="absolute right-0 font-medium text-slate-800">

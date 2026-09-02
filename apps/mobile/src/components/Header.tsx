@@ -9,6 +9,7 @@ import {
   ClubId,
   getClubLogo,
   getCompetitionEmblem,
+  getTournamentName,
 } from "./tournaments";
 
 type HeaderProps = {
@@ -77,7 +78,9 @@ export default function Header({
                         ) : (
                           <View className="h-5 w-5" />
                         )}
-                        <Menu.ItemTitle>{competition.name}</Menu.ItemTitle>
+                        <Menu.ItemTitle>
+                          {getTournamentName(competition)}
+                        </Menu.ItemTitle>
                       </Menu.Item>
                     );
                   })
