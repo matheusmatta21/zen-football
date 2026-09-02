@@ -4,22 +4,27 @@ import { Trophy } from "lucide-react-native";
 import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import SelectClubsDialog from "./SelectClubsDialog";
-import { ClubId, getCompetitionEmblem } from "./tournaments";
+import {
+  Club,
+  ClubId,
+  getClubLogo,
+  getCompetitionEmblem,
+} from "./tournaments";
 
 type HeaderProps = {
   competitions: FdCompetition[];
   selectedCompetitionIds: number[];
   onToggleCompetition: (competitionId: number) => void;
-  selectedClubIds: ClubId[];
-  onToggleClub: (clubId: ClubId) => void;
+  selectedClub: Club;
+  onSelectClub: (clubId: ClubId) => void;
 };
 
 export default function Header({
   competitions,
   selectedCompetitionIds,
   onToggleCompetition,
-  selectedClubIds,
-  onToggleClub,
+  selectedClub,
+  onSelectClub,
 }: HeaderProps) {
   const [isClubsModalOpen, setIsClubsModalOpen] = useState(false);
 
@@ -86,9 +91,12 @@ export default function Header({
           />
         </View>
         <View className="h-10 w-10 items-center justify-center">
-          <Pressable onPress={() => setIsClubsModalOpen(true)}>
+          <Pressable
+            accessibilityLabel={`Clube: ${selectedClub.name}`}
+            onPress={() => setIsClubsModalOpen(true)}
+          >
             <Image
-              source={require("../../assets/images/bournemouth.png")}
+              source={getClubLogo(selectedClub)}
               className="h-7 w-7 object-contain"
             />
           </Pressable>
@@ -100,8 +108,8 @@ export default function Header({
       <SelectClubsDialog
         isOpen={isClubsModalOpen}
         onClose={() => setIsClubsModalOpen(false)}
-        selectedClubIds={selectedClubIds}
-        onToggleClub={onToggleClub}
+        selectedClubId={selectedClub.id}
+        onSelectClub={onSelectClub}
       />
     </View>
   );

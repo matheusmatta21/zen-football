@@ -5,23 +5,23 @@ type ClubOptionProps = {
   clubName: string;
   clubImageSource: ImageSourcePropType;
   isSelected: boolean;
-  onToggle: () => void;
+  onSelect: () => void;
 };
 
 export default function ClubOption({
   clubName,
   clubImageSource,
   isSelected,
-  onToggle,
+  onSelect,
 }: ClubOptionProps) {
   return (
     <View className="w-1/3 flex-col items-center px-1">
       <Pressable
         className="w-full items-center"
-        accessibilityRole="checkbox"
-        accessibilityState={{ checked: isSelected }}
+        accessibilityRole="radio"
+        accessibilityState={{ selected: isSelected }}
         accessibilityLabel={clubName}
-        onPress={onToggle}
+        onPress={onSelect}
       >
         <View
           data-active={isSelected}

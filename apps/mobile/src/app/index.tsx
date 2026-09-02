@@ -8,25 +8,24 @@ import { withUniwind } from "uniwind";
 import Header from "../components/Header";
 import MatchCard from "../components/MatchCard";
 import { CLUBS, ClubId } from "../components/tournaments";
-import {
-  getTestCompetitions,
-  getTestMatches,
-} from "../services/footballDataTest";
+import { getTeamCompetitions, getTeamMatches } from "../services/footballData";
 
 const StyledSafeAreaView = withUniwind(SafeAreaView);
 
 export default function Index() {
+  const [selectedClubId, setSelectedClubId] = useState<ClubId>(CLUBS[0].id);
   const [competitions, setCompetitions] = useState<FdCompetition[]>([]);
   const [selectedCompetitionIds, setSelectedCompetitionIds] = useState<
     number[]
   >([]);
-  const [selectedClubIds, setSelectedClubIds] = useState<ClubId[]>(() =>
-    CLUBS.map((club) => club.id),
-  );
 
   const [matches, setMatches] = useState<Match[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const selectedClub =
+    CLUBS.find((club) => club.id === selectedClubId) ?? CLUBS[0];
+  const teamId = selectedClub.teamId;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -34,7 +33,7 @@ export default function Index() {
     setIsLoading(true);
     setError(null);
 
-    getTestMatches({ signal: controller.signal })
+    getTeamMatches({ teamId, signal: controller.signal })
       .then(setMatches)
       .catch((cause) => {
         if (controller.signal.aborted) return;
@@ -47,12 +46,12 @@ export default function Index() {
       });
 
     return () => controller.abort();
-  }, []);
+  }, [teamId]);
 
   useEffect(() => {
     const controller = new AbortController();
 
-    getTestCompetitions({ signal: controller.signal })
+    getTeamCompetitions({ teamId, signal: controller.signal })
       .then((fetchedCompetitions) => {
         setCompetitions(fetchedCompetitions);
         setSelectedCompetitionIds(
@@ -65,7 +64,7 @@ export default function Index() {
       });
 
     return () => controller.abort();
-  }, []);
+  }, [teamId]);
 
   const handleToggleCompetition = (competitionId: number) => {
     setSelectedCompetitionIds((currentIds) =>
@@ -75,13 +74,12 @@ export default function Index() {
     );
   };
 
-  const handleToggleCLub = (clubId: ClubId) => {
-    setSelectedClubIds((currentIds) =>
-      currentIds.includes(clubId)
-        ? currentIds.filter((id) => id !== clubId)
-        : [...currentIds, clubId],
-    );
-  };
+  const visibleMatches =
+    competitions.length === 0
+      ? matches
+      : matches.filter((match) =>
+          selectedCompetitionIds.includes(match.competition.id),
+        );
 
   return (
     <StyledSafeAreaView className="flex-1 bg-pitch">
@@ -89,8 +87,8 @@ export default function Index() {
         competitions={competitions}
         selectedCompetitionIds={selectedCompetitionIds}
         onToggleCompetition={handleToggleCompetition}
-        selectedClubIds={selectedClubIds}
-        onToggleClub={handleToggleCLub}
+        selectedClub={selectedClub}
+        onSelectClub={setSelectedClubId}
       />
       <ScrollView
         className="flex-1"
@@ -102,7 +100,9 @@ export default function Index() {
 
         {!isLoading &&
           !error &&
-          matches.map((match) => <MatchCard key={match.id} match={match} />)}
+          visibleMatches.map((match) => (
+            <MatchCard key={match.id} match={match} />
+          ))}
       </ScrollView>
     </StyledSafeAreaView>
   );

@@ -14,10 +14,12 @@ export const TOURNAMENTS = [
   { id: "uefa-champions-league", name: "UEFA Champions League", logoUrl: null },
 ] as const satisfies readonly CatalogEntry[];
 
+type ClubCatalogEntry = CatalogEntry & { teamId: number };
+
 export const CLUBS = [
-  { id: "bournemouth", name: "Bournemouth", logoUrl: null },
-  { id: "chelsea", name: "Chelsea", logoUrl: null },
-] as const satisfies readonly CatalogEntry[];
+  { id: "bournemouth", name: "Bournemouth", logoUrl: null, teamId: 1044 },
+  { id: "chelsea", name: "Chelsea", logoUrl: null, teamId: 61 },
+] as const satisfies readonly ClubCatalogEntry[];
 
 export type TournamentId = (typeof TOURNAMENTS)[number]["id"];
 export type ClubId = (typeof CLUBS)[number]["id"];
@@ -32,9 +34,9 @@ export type Club = {
   id: ClubId;
   name: string;
   logoUrl: string | null;
+  teamId: number;
 };
 
-/** Temporada no formato usado pelas ligas europeias. */
 export type Season = string;
 
 export const CURRENT_SEASON: Season = "2025/26";

@@ -6,15 +6,15 @@ import ClubOption from "./ClubOption";
 type SelectClubsDialogProps = {
   isOpen: boolean;
   onClose: () => void;
-  selectedClubIds: ClubId[];
-  onToggleClub: (clubId: ClubId) => void;
+  selectedClubId: ClubId;
+  onSelectClub: (clubId: ClubId) => void;
 };
 
 export default function SelectClubsDialog({
   isOpen,
   onClose,
-  selectedClubIds,
-  onToggleClub,
+  selectedClubId,
+  onSelectClub,
 }: SelectClubsDialogProps) {
   return (
     <Dialog
@@ -47,8 +47,11 @@ export default function SelectClubsDialog({
                   key={club.id}
                   clubName={club.name}
                   clubImageSource={getClubLogo(club)}
-                  isSelected={selectedClubIds.includes(club.id)}
-                  onToggle={() => onToggleClub(club.id)}
+                  isSelected={club.id === selectedClubId}
+                  onSelect={() => {
+                    onSelectClub(club.id);
+                    onClose();
+                  }}
                 />
               ))}
             </View>
