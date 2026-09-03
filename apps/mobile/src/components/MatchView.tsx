@@ -13,7 +13,7 @@ function crestSource(team: MatchTeam): ImageSourcePropType | null {
 
 export default function MatchView({ match }: MatchViewProps) {
   return (
-    <View className="mt-4 w-full flex-row items-center justify-between">
+    <View className="mt-4 w-full flex-row items-start justify-between">
       <TeamView
         teamName={
           match.homeTeam.shortName ?? match.homeTeam.name ?? "A definir"
