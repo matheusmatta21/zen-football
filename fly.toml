@@ -1,0 +1,38 @@
+# zen-football API — single shared-cpu-1x machine, ~$2.02/month.
+app = "zen-football-api"
+primary_region = "gru"
+
+[build]
+
+[env]
+  PORT = "8080"
+  NODE_ENV = "production"
+  # Fly Proxy sits in front of the app; without this the rate limiter
+  # would bucket every client under the proxy's IP.
+  TRUST_PROXY_HOPS = "1"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  # The cache lives in memory and football-data.org allows only 10 req/min,
+  # so we keep the machine warm instead of letting it stop.
+  auto_stop_machines = "off"
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 150
+    hard_limit = 200
+
+  [[http_service.checks]]
+    method = "GET"
+    path = "/health"
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "30s"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory = "256mb"

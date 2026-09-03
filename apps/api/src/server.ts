@@ -4,7 +4,7 @@ import rateLimit from "express-rate-limit";
 import routes from "./routes";
 
 const app: Express = express();
-const port = 3000;
+const port = Number(process.env.PORT ?? 3000);
 
 const TRUST_PROXY_HOPS = Number(process.env.TRUST_PROXY_HOPS ?? 0);
 
@@ -22,8 +22,13 @@ const limiter = rateLimit({
 
 app.use(compression());
 app.use(express.json());
+
+app.get("/health", (_req, res) => {
+  res.json({ status: "ok" });
+});
+
 app.use("/api", limiter, routes);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Listening on port ${port}`);
 });
