@@ -7,13 +7,14 @@ import { withUniwind } from "uniwind";
 
 import Header from "../components/Header";
 import MatchCard from "../components/MatchCard";
-import { CLUBS, ClubId } from "../components/tournaments";
+import { CLUBS } from "../components/tournaments";
+import { useSelectedClub } from "../contexts/SelectedClubContext";
 import { getTeamCompetitions, getTeamMatches } from "../services/footballData";
 
 const StyledSafeAreaView = withUniwind(SafeAreaView);
 
 export default function Index() {
-  const [selectedClubId, setSelectedClubId] = useState<ClubId>(CLUBS[0].id);
+  const { selectedClubId, selectClub } = useSelectedClub();
   const [competitions, setCompetitions] = useState<FdCompetition[]>([]);
   const [selectedCompetitionIds, setSelectedCompetitionIds] = useState<
     number[]
@@ -88,7 +89,7 @@ export default function Index() {
         selectedCompetitionIds={selectedCompetitionIds}
         onToggleCompetition={handleToggleCompetition}
         selectedClub={selectedClub}
-        onSelectClub={setSelectedClubId}
+        onSelectClub={selectClub}
       />
       <ScrollView
         className="flex-1"

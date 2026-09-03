@@ -10,6 +10,7 @@ import { withUniwind } from "uniwind";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { CLUBS, ClubId } from "@/components/tournaments";
+import { useSelectedClub } from "@/contexts/SelectedClubContext";
 import WelcomeStep from "./_components/WelcomeStep";
 import SelectClubStep from "./_components/SelectClubStep";
 import ConfirmClubStep from "./_components/ConfirmClubStep";
@@ -35,6 +36,7 @@ function getSlideTransition(direction: Direction) {
 }
 
 export default function OnBoarding() {
+  const { selectClub } = useSelectedClub();
   const [step, setStep] = useState<Step>("welcome");
   const [direction, setDirection] = useState<Direction>("forward");
   const [selectedClubId, setSelectedClubId] = useState<ClubId | null>(null);
@@ -72,9 +74,7 @@ export default function OnBoarding() {
           {step === "confirmClub" && selectedClub && (
             <ConfirmClubStep
               club={selectedClub}
-              onConfirm={() => {
-                // TODO (passo 2): persistir o clube e liberar a tela principal
-              }}
+              onConfirm={() => selectClub(selectedClub.id)}
               onBack={() => goToStep("selectClub", "back")}
             />
           )}
