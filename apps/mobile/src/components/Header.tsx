@@ -46,12 +46,16 @@ export default function Header({
                 width={240}
                 align="center"
                 offset={8}
-                className="bg-clock"
+                className="rounded-2xl border border-card-border bg-card/90 p-2 shadow-lg"
               >
-                <Menu.Label className="mb-1">Competições</Menu.Label>
+                <Menu.Label className="mb-2 px-2 pt-1 text-xs font-bold uppercase text-heading">
+                  Ligas
+                </Menu.Label>
                 {competitions.length === 0 ? (
-                  <Menu.Item isDisabled>
-                    <Menu.ItemTitle>Nenhuma competição</Menu.ItemTitle>
+                  <Menu.Item isDisabled className="rounded-xl px-3 py-2">
+                    <Menu.ItemTitle className="text-heading">
+                      Nenhuma competição
+                    </Menu.ItemTitle>
                   </Menu.Item>
                 ) : (
                   competitions.map((competition) => {
@@ -64,6 +68,7 @@ export default function Header({
                         isSelected={selectedCompetitionIds.includes(
                           competition.id,
                         )}
+                        className="rounded-xl px-3 py-2.5"
                         onSelectedChange={() =>
                           onToggleCompetition(competition.id)
                         }
@@ -78,7 +83,7 @@ export default function Header({
                         ) : (
                           <View className="h-5 w-5" />
                         )}
-                        <Menu.ItemTitle>
+                        <Menu.ItemTitle className="font-semibold text-heading">
                           {getTournamentName(competition)}
                         </Menu.ItemTitle>
                       </Menu.Item>
