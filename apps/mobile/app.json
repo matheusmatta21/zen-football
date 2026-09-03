@@ -39,6 +39,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "c00a43d2-cce2-4612-b348-ab7706b4213b"
+      }
+    },
+    "owner": "matheusmatta21s-team"
   }
 }
