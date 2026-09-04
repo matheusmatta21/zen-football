@@ -10,7 +10,7 @@ type MatchCardProps = {
 
 const colorVariants = {
   finished: "w-full rounded-[20px] border border-card-border bg-card p-5",
-  live: "w-full rounded-[20px] border-2 border-[#536173] bg-stone-400 p-5",
+  live: "w-full rounded-[20px] border-2 border-live-border bg-live-surface p-5",
   upcoming: "w-full rounded-[20px] border border-card-border bg-card p-5",
 };
 

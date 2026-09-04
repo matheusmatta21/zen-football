@@ -1,4 +1,5 @@
 import type { FdCompetition, Match } from "@zen/types";
+import { useThemeColor } from "heroui-native";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, AppState, ScrollView, Text } from "react-native";
 
@@ -27,6 +28,7 @@ function hasMatchInProgress(matches: Match[], now: number) {
 }
 
 export default function Index() {
+  const muted = useThemeColor("muted");
   const { selectedClubId, selectClub } = useSelectedClub();
   const [competitions, setCompetitions] = useState<FdCompetition[]>([]);
   const [selectedCompetitionIds, setSelectedCompetitionIds] = useState<
@@ -148,7 +150,7 @@ export default function Index() {
         className="flex-1"
         contentContainerClassName="grow w-full items-center gap-5 bg-pitch py-7.5"
       >
-        {isLoading && <ActivityIndicator size="large" color="#4e5c6f" />}
+        {isLoading && <ActivityIndicator size="large" color={muted} />}
 
         {error && <Text className="text-sm font-medium text-clock">{error}</Text>}
 

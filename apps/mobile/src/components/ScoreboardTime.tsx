@@ -1,4 +1,5 @@
 import type { Match } from "@zen/types";
+import { useThemeColor } from "heroui-native";
 import { Loader2 } from "lucide-react-native";
 import { useEffect, useRef } from "react";
 import { Animated, Text, View } from "react-native";
@@ -15,6 +16,7 @@ const fontVariants = {
 
 export default function ScoreboardTime({ match }: ScoreboardTimeProps) {
   const { status } = match;
+  const muted = useThemeColor("muted");
   const spinValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -46,7 +48,7 @@ export default function ScoreboardTime({ match }: ScoreboardTimeProps) {
             {match.minute !== null ? `${match.minute}'` : "AO VIVO"}
           </Text>
           <Animated.View style={{ transform: [{ rotate }] }}>
-            <Loader2 size={14} color={"#4e5c6f"} />
+            <Loader2 size={14} color={muted} />
           </Animated.View>
         </>
       )}

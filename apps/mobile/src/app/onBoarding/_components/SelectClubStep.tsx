@@ -18,10 +18,10 @@ export default function SelectClubStep({
   return (
     <View className="flex flex-col items-center justify-center gap-4 px-8">
       <View className="flex flex-col items-center justify-center gap-4">
-        <Text className="text-3xl font-extrabold text-black text-center">
+        <Text className="text-title text-center text-ink">
           Selecione seu clube
         </Text>
-        <Text className="text-base text-muted-foreground text-center">
+        <Text className="text-body text-center text-heading">
           Escolha o clube que você deseja acompanhar as partidas.
         </Text>
       </View>
@@ -40,11 +40,11 @@ export default function SelectClubStep({
       </View>
       <Button
         variant="primary"
-        className="mt-2 px-8 bg-black"
+        className="mt-2 px-8"
         isDisabled={selectedClubId === null}
         onPress={onNext}
       >
-        Continuar
+        <Button.Label>Continuar</Button.Label>
       </Button>
     </View>
   );

@@ -7,9 +7,9 @@ type HeaderCardProps = {
 };
 
 const fontVariants = {
-  live: "text-sm font-bold text-clock",
-  finished: "text-sm font-medium text-clock",
-  upcoming: "text-sm font-medium text-clock",
+  live: "text-sm font-bold text-heading",
+  finished: "text-sm font-semibold text-heading",
+  upcoming: "text-sm font-semibold text-heading",
 };
 
 const imageSizeVariants = {

@@ -15,10 +15,10 @@ export default function WelcomeStep({ onNext }: WelcomeStepProps) {
         />
       </View>
       <View className="flex flex-col items-center justify-center gap-4">
-        <Text className="text-3xl font-extrabold text-black text-center">
+        <Text className="text-title text-center text-ink">
           Bem Vindo ao Zen Football
         </Text>
-        <Text className="text-base text-muted-foreground text-center">
+        <Text className="text-body text-center text-heading">
           A proposta do app é exibir partidas de futebol de maneira minimalista
           e simples, para que você acompanhe o que realmente importa sem
           distrações.
@@ -26,10 +26,10 @@ export default function WelcomeStep({ onNext }: WelcomeStepProps) {
       </View>
       <Button
         variant="primary"
-        className="mt-4 px-8 bg-black"
+        className="mt-4 px-8"
         onPress={onNext}
       >
-        Começar
+        <Button.Label>Começar</Button.Label>
       </Button>
     </View>
   );

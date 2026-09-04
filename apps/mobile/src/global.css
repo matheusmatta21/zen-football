@@ -3,10 +3,49 @@
 
 @import 'heroui-native/styles';
 
-@theme {
+@theme static {
   --color-pitch: #a6a695;
   --color-card: #b9b9a9;
   --color-card-border: #b4b4a5;
   --color-heading: #404034;
   --color-clock: #5a6777;
+  --color-ink: #24241a;
+  --color-primary: #000000;
+  --color-primary-pressed: #35352f;
+  --color-primary-foreground: #a6a695;
+  --color-option: #b5b5a5;
+  --color-option-selected: #b1b1a1;
+  --color-live-surface: #a8a29e;
+  --color-live-border: #536173;
+
+  --color-background: #a6a695;
+  --color-foreground: #24241a;
+  --color-muted: #5a6777;
+  --color-border: #24241a;
+  --color-default-foreground: #24241a;
+  --color-accent: #000000;
+  --color-accent-foreground: #a6a695;
+  --color-accent-hover: #35352f;
+
+  /* Semantic type scale */
+  --text-title: 1.875rem;
+  --text-title--line-height: 2.25rem;
+  --text-title--font-weight: 800;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5rem;
+  --text-body--font-weight: 400;
+  --text-button: 1rem;
+  --text-button--line-height: 1.25rem;
+  --text-button--font-weight: 600;
+  --text-button--letter-spacing: 0.01em;
+}
+
+@layer components {
+  .button__label--variant-primary,
+  .button__label--variant-outline {
+    font-size: var(--text-button);
+    line-height: var(--text-button--line-height);
+    font-weight: var(--text-button--font-weight);
+    letter-spacing: var(--text-button--letter-spacing);
+  }
 }

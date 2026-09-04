@@ -1,5 +1,5 @@
 import type { FdCompetition } from "@zen/types";
-import { Menu } from "heroui-native";
+import { Menu, useThemeColor } from "heroui-native";
 import { CheckIcon, Trophy } from "lucide-react-native";
 import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
@@ -28,6 +28,8 @@ export default function Header({
   onSelectClub,
 }: HeaderProps) {
   const [isClubsModalOpen, setIsClubsModalOpen] = useState(false);
+  const background = useThemeColor("background");
+  const foreground = useThemeColor("default-foreground");
   const selectedClubLogo = getClubLogo(selectedClub);
 
   return (
@@ -62,8 +64,6 @@ export default function Header({
                     const isSelected = selectedCompetitionIds.includes(
                       competition.id,
                     );
-                    const selectedBackgroundColor = "#a6a695";
-
                     return (
                       <Menu.Item
                         key={competition.id}
@@ -71,7 +71,7 @@ export default function Header({
                         isSelected={isSelected}
                         animation={{
                           backgroundColor: {
-                            value: selectedBackgroundColor,
+                            value: background,
                             timingConfig: { duration: 0 },
                           },
                         }}
@@ -85,7 +85,7 @@ export default function Header({
                             width={20}
                             height={20}
                             strokeWidth={2}
-                            color="black"
+                            color={foreground}
                           />
                         </Menu.ItemIndicator>
                         {competitionEmblem ? (

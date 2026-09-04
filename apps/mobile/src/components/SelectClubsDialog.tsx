@@ -1,4 +1,4 @@
-import { Dialog } from "heroui-native";
+import { Dialog, useThemeColor } from "heroui-native";
 import { View } from "react-native";
 import { CLUBS, ClubId, getClubLogo } from "./tournaments";
 import ClubOption from "./ClubOption";
@@ -16,6 +16,8 @@ export default function SelectClubsDialog({
   selectedClubId,
   onSelectClub,
 }: SelectClubsDialogProps) {
+  const foreground = useThemeColor("default-foreground");
+
   return (
     <Dialog
       isOpen={isOpen}
@@ -32,11 +34,11 @@ export default function SelectClubsDialog({
           className="w-[95%] self-center bg-card"
         >
           <View className="relative flex-row items-center mb-4">
-            <Dialog.Title className="text-black w-full text-center">
+            <Dialog.Title className="w-full text-center text-ink">
               Clubes
             </Dialog.Title>
             <Dialog.Close
-              iconProps={{ color: "black" }}
+              iconProps={{ color: foreground }}
               className="absolute right-0 top-0 bg-transparent"
             />
           </View>

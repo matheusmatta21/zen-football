@@ -1,3 +1,4 @@
+import { useThemeColor } from "heroui-native";
 import { Check } from "lucide-react-native";
 import { Image, ImageSourcePropType, Pressable, Text, View } from "react-native";
 
@@ -14,6 +15,8 @@ export default function TournamentOption({
   isSelected,
   onToggle,
 }: TournamentOptionProps) {
+  const foreground = useThemeColor("default-foreground");
+
   return (
     <View className="w-1/3 flex-col items-center px-1">
       <Pressable
@@ -25,7 +28,7 @@ export default function TournamentOption({
       >
         <View
           data-active={isSelected}
-          className="relative aspect-square w-full items-center justify-center rounded-lg border-2 border-transparent bg-[#b5b5a5] p-2 data-active:border-border data-active:bg-[#b1b1a1]"
+          className="relative aspect-square w-full items-center justify-center rounded-lg border-2 border-transparent bg-option p-2 data-active:border-border data-active:bg-option-selected"
         >
           <Image
             source={tournamentImageSource}
@@ -33,7 +36,12 @@ export default function TournamentOption({
           />
           {isSelected && (
             <View className="absolute right-1 top-1">
-              <Check width={14} height={14} strokeWidth={2.5} color="#404034" />
+              <Check
+                width={14}
+                height={14}
+                strokeWidth={2.5}
+                color={foreground}
+              />
             </View>
           )}
         </View>
