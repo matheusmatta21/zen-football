@@ -1,6 +1,6 @@
 import type { FdCompetition } from "@zen/types";
 import { Menu } from "heroui-native";
-import { Trophy } from "lucide-react-native";
+import { CheckIcon, Trophy } from "lucide-react-native";
 import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import SelectClubsDialog from "./SelectClubsDialog";
@@ -28,7 +28,6 @@ export default function Header({
   onSelectClub,
 }: HeaderProps) {
   const [isClubsModalOpen, setIsClubsModalOpen] = useState(false);
-
   const selectedClubLogo = getClubLogo(selectedClub);
 
   return (
@@ -60,20 +59,35 @@ export default function Header({
                 ) : (
                   competitions.map((competition) => {
                     const competitionEmblem = getCompetitionEmblem(competition);
+                    const isSelected = selectedCompetitionIds.includes(
+                      competition.id,
+                    );
+                    const selectedBackgroundColor = "#a6a695";
 
                     return (
                       <Menu.Item
                         key={competition.id}
                         shouldCloseOnSelect={false}
-                        isSelected={selectedCompetitionIds.includes(
-                          competition.id,
-                        )}
+                        isSelected={isSelected}
+                        animation={{
+                          backgroundColor: {
+                            value: selectedBackgroundColor,
+                            timingConfig: { duration: 0 },
+                          },
+                        }}
                         className="rounded-xl px-3 py-2.5"
                         onSelectedChange={() =>
                           onToggleCompetition(competition.id)
                         }
                       >
-                        <Menu.ItemIndicator />
+                        <Menu.ItemIndicator>
+                          <CheckIcon
+                            width={20}
+                            height={20}
+                            strokeWidth={2}
+                            color="black"
+                          />
+                        </Menu.ItemIndicator>
                         {competitionEmblem ? (
                           <Image
                             source={competitionEmblem}
