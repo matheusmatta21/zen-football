@@ -1,16 +1,10 @@
 import type { FdCompetition } from "@zen/types";
-import { Menu, useThemeColor } from "heroui-native";
-import { CheckIcon, Trophy } from "lucide-react-native";
 import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
+
+import CompetitionsMenu from "./CompetitionsMenu";
 import SelectClubsDialog from "./SelectClubsDialog";
-import {
-  Club,
-  ClubId,
-  getClubLogo,
-  getCompetitionEmblem,
-  getTournamentName,
-} from "./tournaments";
+import { Club, ClubId, getClubLogo } from "./tournaments";
 
 type HeaderProps = {
   competitions: FdCompetition[];
@@ -28,86 +22,16 @@ export default function Header({
   onSelectClub,
 }: HeaderProps) {
   const [isClubsModalOpen, setIsClubsModalOpen] = useState(false);
-  const background = useThemeColor("background");
-  const foreground = useThemeColor("default-foreground");
   const selectedClubLogo = getClubLogo(selectedClub);
 
   return (
     <View className="flex-col items-center justify-center bg-pitch pt-7.5 pb-2">
       <View className="mb-4 w-full flex-row items-center justify-center gap-10 bg-pitch">
-        <View className="h-10 w-10 items-center justify-center">
-          <Menu>
-            <Menu.Trigger accessibilityLabel="Competições">
-              <Trophy width={28} height={28} strokeWidth={1.5} />
-            </Menu.Trigger>
-            <Menu.Portal>
-              <Menu.Overlay />
-              <Menu.Content
-                presentation="popover"
-                width={240}
-                align="center"
-                offset={8}
-                className="rounded-2xl border border-card-border bg-card/90 p-2 shadow-lg"
-              >
-                <Menu.Label className="mb-2 px-2 pt-1 text-xs font-bold uppercase text-heading">
-                  Ligas
-                </Menu.Label>
-                {competitions.length === 0 ? (
-                  <Menu.Item isDisabled className="rounded-xl px-3 py-2">
-                    <Menu.ItemTitle className="text-heading">
-                      Nenhuma competição
-                    </Menu.ItemTitle>
-                  </Menu.Item>
-                ) : (
-                  competitions.map((competition) => {
-                    const competitionEmblem = getCompetitionEmblem(competition);
-                    const isSelected = selectedCompetitionIds.includes(
-                      competition.id,
-                    );
-                    return (
-                      <Menu.Item
-                        key={competition.id}
-                        shouldCloseOnSelect={false}
-                        isSelected={isSelected}
-                        animation={{
-                          backgroundColor: {
-                            value: background,
-                            timingConfig: { duration: 0 },
-                          },
-                        }}
-                        className="rounded-xl px-3 py-2.5"
-                        onSelectedChange={() =>
-                          onToggleCompetition(competition.id)
-                        }
-                      >
-                        <Menu.ItemIndicator>
-                          <CheckIcon
-                            width={20}
-                            height={20}
-                            strokeWidth={2}
-                            color={foreground}
-                          />
-                        </Menu.ItemIndicator>
-                        {competitionEmblem ? (
-                          <Image
-                            source={competitionEmblem}
-                            className="h-5 w-5"
-                            resizeMode="contain"
-                          />
-                        ) : (
-                          <View className="h-5 w-5" />
-                        )}
-                        <Menu.ItemTitle className="font-semibold text-heading">
-                          {getTournamentName(competition)}
-                        </Menu.ItemTitle>
-                      </Menu.Item>
-                    );
-                  })
-                )}
-              </Menu.Content>
-            </Menu.Portal>
-          </Menu>
-        </View>
+        <CompetitionsMenu
+          competitions={competitions}
+          selectedCompetitionIds={selectedCompetitionIds}
+          onToggleCompetition={onToggleCompetition}
+        />
         <View className="h-10 w-10 items-center justify-center">
           <Image
             source={require("../../assets/images/logo-zen-football.png")}
@@ -122,7 +46,7 @@ export default function Header({
             {selectedClubLogo ? (
               <Image
                 source={selectedClubLogo}
-                className="h-7 w-7 object-contain"
+                className="h-8 w-8 object-contain"
               />
             ) : (
               <View className="h-7 w-7" />
