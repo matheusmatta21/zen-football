@@ -24,10 +24,11 @@ export async function getTeamMatchesController(req: any, res: any) {
 
   const teamId = parseTeamId(rawTeamId);
 
-  if (teamId === null) {
+  if (teamId === null || (season !== undefined && typeof season !== "string") ||
+      (status !== undefined && typeof status !== "string")) {
     return res
       .status(400)
-      .json({ error: "teamId query parameter is missing or not supported" });
+      .json({ error: "Invalid teamId, season or status query parameter" });
   }
 
   try {

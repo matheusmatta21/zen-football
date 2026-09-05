@@ -98,7 +98,29 @@ O volume tem cobrança própria. Não foi criado nem houve deploy automaticament
 Essa configuração atende uma única máquina/processo da API. Para várias
 instâncias, será necessário armazenamento compartilhado e coordenação da
 atualização; volumes independentes não compartilham o catálogo nem a cota.
-O cache de clubes não limita as chamadas de partidas e de competições do time.
+O cache do catálogo é independente do cache de partidas e competições abaixo.
+
+## Cache por clube
+
+Partidas e competições usam cache em memória no backend, compartilhado entre
+todos os usuários da mesma instância. A chave das partidas inclui `teamId`,
+temporada e status; listas de status equivalentes usam a mesma chave.
+
+- Competições de cada clube: 24 horas.
+- Partidas sem jogo ao vivo ou próximo: até 5 minutos.
+- Partidas ao vivo, no intervalo ou nos 5 minutos anteriores ao início: 1 minuto.
+  O cache também expira ao entrar nessa janela, para acompanhar o início do jogo.
+- Chamadas simultâneas para a mesma chave compartilham a consulta pendente.
+  O prazo começa após receber a resposta.
+- Falhas são reutilizadas por 1 minuto, evitando tentativas repetidas para a mesma
+  consulta. Após esse prazo, a próxima solicitação tenta novamente.
+
+São mantidas até 500 entradas, removendo as menos usadas quando necessário;
+consultas pendentes são preservadas até terminar. Este cache é perdido ao
+reiniciar a API; o catálogo de clubes continua persistente no volume.
+Selecionar clubes ainda não consultados ou atender várias instâncias pode
+continuar consumindo a cota externa de 10 requisições/minuto. O cache reduz
+repetições, mas não impõe um limite global de chamadas à API externa.
 
 Testes de integração e persistência, a partir da raiz:
 
