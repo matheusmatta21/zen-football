@@ -7,12 +7,16 @@ type ScoreboardGoalsProps = {
 
 const goalFontVariants = {
   live: "text-4xl font-bold",
+  finishedToday: "text-4xl font-bold",
+  paused: "text-4xl font-bold",
   finished: "text-3xl font-bold",
   upcoming: "text-2xl font-bold",
 };
 
 const xFontVariants = {
   live: "text-2xl",
+  finishedToday: "text-2xl",
+  paused: "text-2xl",
   finished: "text-xl",
   upcoming: "text-lg",
 };

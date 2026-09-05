@@ -9,6 +9,8 @@ type ScoreboardProps = {
 
 const crestHeightVariants = {
   live: "h-12",
+  finishedToday: "h-12",
+  paused: "h-12",
   finished: "h-8",
   upcoming: "h-8",
 };

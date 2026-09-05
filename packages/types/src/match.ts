@@ -1,6 +1,7 @@
 import type { FdMatch, FdMatchStatus } from "./football-data";
 
-type MatchStatus = "live" | "finished" | "upcoming";
+// finishedToday is derived by the app using the device's local date.
+type MatchStatus = "live" | "finished" | "finishedToday" | "upcoming" | "paused";
 
 type MatchNote = "postponed" | "cancelled" | "suspended" | "awarded";
 

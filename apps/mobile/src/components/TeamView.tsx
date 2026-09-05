@@ -9,14 +9,18 @@ type TeamViewProps = {
 
 const sizeVariants = {
   live: "h-15.75 w-15.75",
+  finishedToday: "h-15.75 w-15.75",
+  paused: "h-15.75 w-15.75",
   finished: "h-12 w-12",
   upcoming: "h-12 w-12",
 };
 
 const fontVariants = {
-  live: "text-base font-bold",
-  finished: "text-sm font-bold",
-  upcoming: "text-sm font-bold",
+  live: "text-[13.5px] font-bold",
+  finishedToday: "text-[13.5px] font-bold",
+  paused: "text-sm font-bold",
+  finished: "text-[13px] font-bold",
+  upcoming: "text-[13px] font-bold",
 };
 
 export default function TeamView({ teamName, teamImage, status }: TeamViewProps) {
@@ -36,7 +40,7 @@ export default function TeamView({ teamName, teamImage, status }: TeamViewProps)
         )}
       </View>
       <Text
-        className={`h-10 w-full text-center ${fontVariants[status]}`}
+        className={` w-full text-center ${fontVariants[status]}`}
         numberOfLines={2}
       >
         {teamName}

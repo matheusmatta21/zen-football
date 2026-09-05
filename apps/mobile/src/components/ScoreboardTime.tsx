@@ -3,6 +3,7 @@ import { useThemeColor } from "heroui-native";
 import { Loader2 } from "lucide-react-native";
 import { useEffect, useRef } from "react";
 import { Animated, Text, View } from "react-native";
+import { formatKickoffTime } from "../utils/formatKickoffTime";
 
 type ScoreboardTimeProps = {
   match: Match;
@@ -10,8 +11,10 @@ type ScoreboardTimeProps = {
 
 const fontVariants = {
   live: "text-sm font-bold text-clock",
-  finished: "text-xs font-bold text-clock",
-  upcoming: "text-xs font-bold text-clock",
+  finishedToday: "text-sm font-bold text-clock",
+  paused: "text-sm font-bold text-clock",
+  finished: "text-sm font-bold text-clock",
+  upcoming: "text-sm font-bold text-clock",
 };
 
 export default function ScoreboardTime({ match }: ScoreboardTimeProps) {
@@ -43,16 +46,24 @@ export default function ScoreboardTime({ match }: ScoreboardTimeProps) {
   return (
     <View className="items-center">
       {status === "live" && (
-        <>
+        <View className="flex-col items-center justify-center gap-2">
           <Text className={fontVariants[status]}>
             {match.minute !== null ? `${match.minute}'` : "AO VIVO"}
           </Text>
           <Animated.View style={{ transform: [{ rotate }] }}>
             <Loader2 size={14} color={muted} />
           </Animated.View>
-        </>
+        </View>
       )}
-      {status === "finished" && (
+      {status === "paused" && (
+        <Text className={fontVariants[status]}>INTERVALO</Text>
+      )}
+      {status === "upcoming" && (
+        <Text className={fontVariants[status]}>
+          {formatKickoffTime(match.kickoffUtc)}
+        </Text>
+      )}
+      {(status === "finished" || status === "finishedToday") && (
         <Text className={fontVariants[status]}>FT</Text>
       )}
     </View>
