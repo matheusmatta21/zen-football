@@ -47,3 +47,6 @@ example
 # generated native folders
 apps/*/ios/
 apps/*/android/
+
+# Persistent local API catalog (never bundle runtime cache or test snapshots).
+.cache/

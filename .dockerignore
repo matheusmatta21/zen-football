@@ -8,6 +8,9 @@ node_modules
 .expo
 dist
 web-build
+.cache
+**/.cache
+apps/api/tests
 
 # Secrets never enter the image; Fly injects them as env vars.
 .env

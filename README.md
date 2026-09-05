@@ -71,3 +71,37 @@ contida no backend, sem vazar para as telas.
 - O Metro configura monorepo sozinho a partir do SDK 52 — não há
   `watchFolders` nem `nodeModulesPaths` para manter.
 - No EAS Build, aponte o projeto para `apps/mobile`.
+
+## Catálogo de clubes
+
+O modal e o onboarding carregam `GET /api/clubs` uma vez, com os clubes das
+cinco ligas agrupados. Os accordions usam essa resposta e não fazem requisições.
+`GET /api/teams?competitionId=...` continua disponível usando o mesmo catálogo.
+
+O backend salva o catálogo em `CLUB_CATALOG_FILE` (por padrão,
+`.cache/club-catalog.json` no diretório de execução). Cada liga expira após
+24 horas. A atualização ocorre sob demanda, é compartilhada entre requisições
+concorrentes e salva os resultados por liga. São cinco chamadas externas na
+primeira carga completa; consultas com catálogo válido não consomem a cota.
+Se a atualização falhar, o último catálogo completo é servido com `stale: true`.
+Novas tentativas ficam bloqueadas por cinco minutos, inclusive após reiniciar.
+Sem catálogo completo, `/api/clubs` responde 503 com `Retry-After: 300`.
+
+No Fly.io, `fly.toml` monta o volume `club_catalog` em `/data`. Antes de publicar,
+provisione esse volume de 1 GB em `gru` se ainda não existir:
+
+```bash
+fly volumes create club_catalog --app zen-football-api --region gru --size 1
+```
+
+O volume tem cobrança própria. Não foi criado nem houve deploy automaticamente.
+Essa configuração atende uma única máquina/processo da API. Para várias
+instâncias, será necessário armazenamento compartilhado e coordenação da
+atualização; volumes independentes não compartilham o catálogo nem a cota.
+O cache de clubes não limita as chamadas de partidas e de competições do time.
+
+Testes de integração e persistência, a partir da raiz:
+
+```bash
+node --import tsx --test apps/api/tests/*.test.ts
+```
