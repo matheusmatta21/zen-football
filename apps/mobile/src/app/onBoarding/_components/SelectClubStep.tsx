@@ -22,7 +22,7 @@ export default function SelectClubStep({
           Selecione seu clube
         </Text>
         <Text className="text-body text-center text-heading">
-          Escolha o clube que você deseja acompanhar as partidas.
+          Escolha a liga e depois o clube que você deseja acompanhar as partidas.
         </Text>
       </View>
       <ScrollView className="w-full flex-1" showsVerticalScrollIndicator={false}>

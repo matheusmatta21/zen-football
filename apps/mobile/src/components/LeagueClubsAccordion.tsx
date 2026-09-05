@@ -1,4 +1,4 @@
-import { CLUB_LEAGUES, type Club, type ClubCatalog } from "@zen/types";
+import type { Club, ClubCatalog } from "@zen/types";
 import { Accordion, useThemeColor } from "heroui-native";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
@@ -55,8 +55,8 @@ export default function LeagueClubsAccordion({ selectedClub, onSelectClub }: Pro
   );
   if (catalog === null) return <ActivityIndicator accessibilityLabel="Carregando clubes" color={muted} className="py-6" />;
   return (
-    <Accordion selectionMode="single" defaultValue={String(selectedClub?.competitionId ?? CLUB_LEAGUES[0].id)}
-      className="w-full" classNames={{ separator: "bg-card-border" }}>
+    <Accordion selectionMode="single" className="w-full"
+      classNames={{ separator: "bg-card-border" }}>
       {catalog.leagues.map((league) => (
         <Accordion.Item key={league.id} value={String(league.id)}>
           {({ isExpanded }) => (
