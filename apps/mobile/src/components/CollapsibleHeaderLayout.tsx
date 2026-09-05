@@ -46,7 +46,7 @@ export default function CollapsibleHeaderLayout({
       Animated.parallel([
         Animated.timing(headerTranslateY, {
           toValue: mode === "hidden" ? -headerHeight : 0,
-          duration: mode === "hidden" ? 180 : 220,
+          duration: mode === "hidden" ? 250 : 320,
           useNativeDriver: true,
         }),
         Animated.timing(headerOpacity, {
@@ -56,7 +56,7 @@ export default function CollapsibleHeaderLayout({
               : mode === "visible"
                 ? SCROLLED_HEADER_OPACITY
                 : 1,
-          duration: 180,
+          duration: 250,
           useNativeDriver: true,
         }),
       ]).start();

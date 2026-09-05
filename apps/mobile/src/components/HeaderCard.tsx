@@ -8,12 +8,16 @@ type HeaderCardProps = {
 
 const fontVariants = {
   live: "text-sm font-bold text-heading",
+  finishedToday: "text-sm font-bold text-heading",
+  paused: "text-sm font-bold text-heading",
   finished: "text-sm font-semibold text-heading",
   upcoming: "text-sm font-semibold text-heading",
 };
 
 const imageSizeVariants = {
   live: "h-4.5 w-4.5",
+  finishedToday: "h-4.5 w-4.5",
+  paused: "h-4.5 w-4.5",
   finished: "h-4.5 w-4.5",
   upcoming: "h-4.5 w-4.5",
 };
@@ -45,11 +49,6 @@ export default function HeaderCard({ match }: HeaderCardProps) {
           {getTournamentName(competition)}
         </Text>
       </View>
-      {status === "live" && (
-        <Text className="absolute right-0 font-medium text-slate-800">
-          AGORA
-        </Text>
-      )}
     </View>
   );
 }

@@ -1,6 +1,9 @@
 import type { FdCompetition } from "@zen/types";
+import { useThemeColor } from "heroui-native";
+import { ArrowLeftRight } from "lucide-react-native";
 import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
+import type { MatchListMode } from "../utils/selectMatches";
 
 import CompetitionsMenu from "./CompetitionsMenu";
 import SelectClubsDialog from "./SelectClubsDialog";
@@ -12,6 +15,8 @@ type HeaderProps = {
   onToggleCompetition: (competitionId: number) => void;
   selectedClub: Club;
   onSelectClub: (clubId: ClubId) => void;
+  matchListMode: MatchListMode;
+  onToggleMatchListMode: () => void;
 };
 
 export default function Header({
@@ -20,7 +25,10 @@ export default function Header({
   onToggleCompetition,
   selectedClub,
   onSelectClub,
+  matchListMode,
+  onToggleMatchListMode,
 }: HeaderProps) {
+  const foreground = useThemeColor("default-foreground");
   const [isClubsModalOpen, setIsClubsModalOpen] = useState(false);
   const selectedClubLogo = getClubLogo(selectedClub);
 
@@ -54,9 +62,28 @@ export default function Header({
           </Pressable>
         </View>
       </View>
-      <Text className="font-semibold uppercase text-heading">
-        Partidas Seguintes
-      </Text>
+      <View className="flex-row items-center justify-center">
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={
+            matchListMode === "upcoming"
+              ? "Mostrar partidas passadas"
+              : "Mostrar partidas seguintes"
+          }
+          onPress={onToggleMatchListMode}
+          className="flex-row items-center justify-center active:opacity-60 gap-1 text-center"
+        >
+          <Text
+            accessibilityRole="header"
+            className="font-semibold uppercase text-heading"
+          >
+            {matchListMode === "upcoming"
+              ? "Partidas Seguintes"
+              : "Partidas Passadas"}
+          </Text>
+          <ArrowLeftRight size={20} color={foreground} />
+        </Pressable>
+      </View>
       <SelectClubsDialog
         isOpen={isClubsModalOpen}
         onClose={() => setIsClubsModalOpen(false)}
