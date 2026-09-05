@@ -19,3 +19,5 @@ export type {
   FdSeason,
   FdTeam,
 } from "./football-data";
+export { CLUB_LEAGUES, toClub } from "./club";
+export type { Club, ClubCatalog, CompetitionTeam } from "./club";
