@@ -9,6 +9,7 @@ import MatchCard from "../components/MatchCard";
 import { CLUBS } from "../components/tournaments";
 import { useSelectedClub } from "../contexts/SelectedClubContext";
 import { getTeamCompetitions, getTeamMatches } from "../services/footballData";
+import { selectMatches, type MatchListMode } from "../utils/selectMatches";
 
 const TICK_INTERVAL_MS = 60_000;
 const KICKOFF_LOOKAHEAD_MS = 5 * 60_000;
@@ -32,6 +33,7 @@ export default function Index() {
   >([]);
 
   const [matches, setMatches] = useState<Match[]>([]);
+  const [matchListMode, setMatchListMode] = useState<MatchListMode>("upcoming");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -126,12 +128,14 @@ export default function Index() {
     );
   };
 
-  const visibleMatches =
+  const competitionMatches =
     competitions.length === 0
       ? matches
       : matches.filter((match) =>
           selectedCompetitionIds.includes(match.competition.id),
         );
+
+  const visibleMatches = selectMatches(competitionMatches, matchListMode);
 
   return (
     <CollapsibleHeaderLayout
@@ -142,6 +146,12 @@ export default function Index() {
           onToggleCompetition={handleToggleCompetition}
           selectedClub={selectedClub}
           onSelectClub={selectClub}
+          matchListMode={matchListMode}
+          onToggleMatchListMode={() =>
+            setMatchListMode((current) =>
+              current === "upcoming" ? "finished" : "upcoming",
+            )
+          }
         />
       }
     >
@@ -149,10 +159,17 @@ export default function Index() {
 
       {error && <Text className="text-sm font-medium text-clock">{error}</Text>}
 
+      {!isLoading && !error && visibleMatches.length === 0 && (
+        <Text className="text-sm font-medium text-clock p-5 text-center">
+          Nenhuma partida {matchListMode === "upcoming" ? "seguinte" : "passada"}{" "}
+          para os filtros selecionados.
+        </Text>
+      )}
+
       {!isLoading &&
         !error &&
         visibleMatches.map((match) => (
-          <MatchCard key={match.id} match={match} />
+          <MatchCard key={match.id} match={match} now={now} />
         ))}
     </CollapsibleHeaderLayout>
   );
