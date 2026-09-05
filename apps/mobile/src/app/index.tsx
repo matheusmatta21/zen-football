@@ -1,18 +1,14 @@
 import type { FdCompetition, Match } from "@zen/types";
 import { useThemeColor } from "heroui-native";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, AppState, ScrollView, Text } from "react-native";
+import { ActivityIndicator, AppState, Text } from "react-native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
-import { withUniwind } from "uniwind";
-
+import CollapsibleHeaderLayout from "../components/CollapsibleHeaderLayout";
 import Header from "../components/Header";
 import MatchCard from "../components/MatchCard";
 import { CLUBS } from "../components/tournaments";
 import { useSelectedClub } from "../contexts/SelectedClubContext";
 import { getTeamCompetitions, getTeamMatches } from "../services/footballData";
-
-const StyledSafeAreaView = withUniwind(SafeAreaView);
 
 const TICK_INTERVAL_MS = 60_000;
 const KICKOFF_LOOKAHEAD_MS = 5 * 60_000;
@@ -138,28 +134,26 @@ export default function Index() {
         );
 
   return (
-    <StyledSafeAreaView className="flex-1 bg-pitch">
-      <Header
-        competitions={competitions}
-        selectedCompetitionIds={selectedCompetitionIds}
-        onToggleCompetition={handleToggleCompetition}
-        selectedClub={selectedClub}
-        onSelectClub={selectClub}
-      />
-      <ScrollView
-        className="flex-1"
-        contentContainerClassName="grow w-full items-center gap-5 bg-pitch py-7.5"
-      >
-        {isLoading && <ActivityIndicator size="large" color={muted} />}
+    <CollapsibleHeaderLayout
+      header={
+        <Header
+          competitions={competitions}
+          selectedCompetitionIds={selectedCompetitionIds}
+          onToggleCompetition={handleToggleCompetition}
+          selectedClub={selectedClub}
+          onSelectClub={selectClub}
+        />
+      }
+    >
+      {isLoading && <ActivityIndicator size="large" color={muted} />}
 
-        {error && <Text className="text-sm font-medium text-clock">{error}</Text>}
+      {error && <Text className="text-sm font-medium text-clock">{error}</Text>}
 
-        {!isLoading &&
-          !error &&
-          visibleMatches.map((match) => (
-            <MatchCard key={match.id} match={match} />
-          ))}
-      </ScrollView>
-    </StyledSafeAreaView>
+      {!isLoading &&
+        !error &&
+        visibleMatches.map((match) => (
+          <MatchCard key={match.id} match={match} />
+        ))}
+    </CollapsibleHeaderLayout>
   );
 }
