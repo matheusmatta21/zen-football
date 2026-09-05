@@ -1,12 +1,14 @@
 import { useThemeColor } from "heroui-native";
 import { Check } from "lucide-react-native";
-import { Image, ImageSourcePropType, Pressable, Text, View } from "react-native";
+import { ImageSourcePropType, Pressable, Text, View } from "react-native";
+import CrestImage from "./CrestImage";
 
 type ClubOptionProps = {
   clubName: string;
   clubImageSource: ImageSourcePropType | null;
   isSelected: boolean;
   onSelect: () => void;
+  columns?: 3 | 4;
 };
 
 export default function ClubOption({
@@ -14,11 +16,12 @@ export default function ClubOption({
   clubImageSource,
   isSelected,
   onSelect,
+  columns = 3,
 }: ClubOptionProps) {
   const foreground = useThemeColor("default-foreground");
 
   return (
-    <View className="w-1/3 flex-col items-center px-1">
+    <View className={`${columns === 4 ? "w-1/4" : "w-1/3"} flex-col items-center px-1.5`}>
       <Pressable
         className="w-full items-center"
         accessibilityRole="radio"
@@ -30,14 +33,7 @@ export default function ClubOption({
           data-active={isSelected}
           className="relative aspect-square w-full items-center justify-center rounded-lg border-2 border-transparent bg-option p-2 data-active:border-border data-active:bg-option-selected"
         >
-          {clubImageSource ? (
-            <Image
-              source={clubImageSource}
-              className="h-11 w-11 object-contain"
-            />
-          ) : (
-            <View className="h-11 w-11" />
-          )}
+          <CrestImage source={clubImageSource} size={40} name={clubName} />
           {isSelected && (
             <View className="absolute right-1 top-1">
               <Check
@@ -50,7 +46,7 @@ export default function ClubOption({
           )}
         </View>
         <View className="mt-2 w-full">
-          <Text className="text-center">{clubName}</Text>
+          <Text numberOfLines={2} className="text-center text-xs font-semibold text-ink">{clubName}</Text>
         </View>
       </Pressable>
     </View>

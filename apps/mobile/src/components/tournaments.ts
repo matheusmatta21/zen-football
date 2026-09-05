@@ -1,4 +1,6 @@
 import type { ImageSourcePropType } from "react-native";
+import type { Club } from "@zen/types";
+export type { Club } from "@zen/types";
 
 type CatalogEntry = {
   id: string;
@@ -19,6 +21,7 @@ export const TOURNAMENTS = [
     code: "BSA",
   },
   { id: "bundesliga", name: "Bundesliga", logoUrl: null, code: "BL1" },
+  { id: "serie-a", name: "Serie A", logoUrl: null, code: "SA" },
   {
     id: "uefa-champions-league",
     name: "UEFA Champions League",
@@ -27,66 +30,10 @@ export const TOURNAMENTS = [
   },
 ] as const satisfies readonly TournamentCatalogEntry[];
 
-type ClubCatalogEntry = CatalogEntry & { teamId: number };
-
-export const CLUBS = [
-  { id: "bournemouth", name: "Bournemouth", logoUrl: null, teamId: 1044 },
-  { id: "chelsea", name: "Chelsea", logoUrl: null, teamId: 61 },
-  {
-    id: "arsenal",
-    name: "Arsenal",
-    logoUrl: "https://crests.football-data.org/57.png",
-    teamId: 57,
-  },
-  {
-    id: "barcelona",
-    name: "Barcelona",
-    logoUrl: "https://crests.football-data.org/81.png",
-    teamId: 81,
-  },
-  {
-    id: "borussia-dortmund",
-    name: "Borussia Dortmund",
-    logoUrl: "https://crests.football-data.org/4.png",
-    teamId: 4,
-  },
-  {
-    id: "juventus",
-    name: "Juventus",
-    logoUrl: "https://crests.football-data.org/109.png",
-    teamId: 109,
-  },
-  {
-    id: "fluminense",
-    name: "Fluminense",
-    logoUrl: "https://crests.football-data.org/1765.png",
-    teamId: 1765,
-  },
-  {
-    id: "vasco",
-    name: "Vasco da Gama",
-    logoUrl: "https://crests.football-data.org/1780.png",
-    teamId: 1780,
-  },
-  {
-    id: "corinthians",
-    name: "Corinthians",
-    logoUrl: "https://crests.football-data.org/1779.png",
-    teamId: 1779,
-  },
-] as const satisfies readonly ClubCatalogEntry[];
-
 export type TournamentId = (typeof TOURNAMENTS)[number]["id"];
-export type ClubId = (typeof CLUBS)[number]["id"];
+export type ClubId = Club["id"];
 
-export type Club = {
-  id: ClubId;
-  name: string;
-  logoUrl: string | null;
-  teamId: number;
-};
-
-export const TOURNAMENT_LOGOS: Record<TournamentId, ImageSourcePropType> = {
+export const TOURNAMENT_LOGOS: Partial<Record<TournamentId, ImageSourcePropType>> = {
   "premier-league": require("../../assets/images/premier-league.png"),
   "la-liga": require("../../assets/images/la-liga.png"),
   "brasileirao-serie-a": require("../../assets/images/brasileirao-serie-a.png"),
@@ -96,8 +43,8 @@ export const TOURNAMENT_LOGOS: Record<TournamentId, ImageSourcePropType> = {
 
 /** Escudos empacotados no app. Clubes fora daqui usam o `logoUrl` remoto. */
 export const CLUB_LOGOS: Partial<Record<ClubId, ImageSourcePropType>> = {
-  bournemouth: require("../../assets/images/bournemouth.png"),
-  chelsea: require("../../assets/images/chelsea.webp"),
+  1044: require("../../assets/images/bournemouth.png"),
+  61: require("../../assets/images/chelsea.webp"),
 };
 
 function getTournamentByCode(code: string) {
@@ -114,8 +61,8 @@ export function getCompetitionEmblem(competition: {
   emblemUrl?: string | null;
 }): ImageSourcePropType | null {
   const tournament = getTournamentByCode(competition.code);
-  if (tournament) {
-    return TOURNAMENT_LOGOS[tournament.id];
+  if (tournament && TOURNAMENT_LOGOS[tournament.id]) {
+    return TOURNAMENT_LOGOS[tournament.id] ?? null;
   }
 
   const remoteEmblem = competition.emblem ?? competition.emblemUrl ?? null;

@@ -1,22 +1,23 @@
 import { Dialog, useThemeColor } from "heroui-native";
-import { View } from "react-native";
-import { CLUBS, ClubId, getClubLogo } from "./tournaments";
-import ClubOption from "./ClubOption";
+import { ScrollView, View, useWindowDimensions } from "react-native";
+import type { Club } from "@zen/types";
+import LeagueClubsAccordion from "./LeagueClubsAccordion";
 
 type SelectClubsDialogProps = {
   isOpen: boolean;
   onClose: () => void;
-  selectedClubId: ClubId;
-  onSelectClub: (clubId: ClubId) => void;
+  selectedClub: Club;
+  onSelectClub: (club: Club) => void;
 };
 
 export default function SelectClubsDialog({
   isOpen,
   onClose,
-  selectedClubId,
+  selectedClub,
   onSelectClub,
 }: SelectClubsDialogProps) {
   const foreground = useThemeColor("default-foreground");
+  const { height } = useWindowDimensions();
 
   return (
     <Dialog
@@ -31,7 +32,8 @@ export default function SelectClubsDialog({
         <Dialog.Overlay />
         <Dialog.Content
           isSwipeable={false}
-          className="w-[95%] self-center bg-card"
+          className="w-[95%] max-w-lg self-center rounded-[28px] bg-card p-5"
+          style={{ maxHeight: height * 0.85 }}
         >
           <View className="relative flex-row items-center mb-4">
             <Dialog.Title className="w-full text-center text-ink">
@@ -42,22 +44,10 @@ export default function SelectClubsDialog({
               className="absolute right-0 top-0 bg-transparent"
             />
           </View>
-          <View>
-            <View className="mt-4 flex-row flex-wrap gap-y-10">
-              {CLUBS.map((club) => (
-                <ClubOption
-                  key={club.id}
-                  clubName={club.name}
-                  clubImageSource={getClubLogo(club)}
-                  isSelected={club.id === selectedClubId}
-                  onSelect={() => {
-                    onSelectClub(club.id);
-                    onClose();
-                  }}
-                />
-              ))}
-            </View>
-          </View>
+          <ScrollView style={{ flexShrink: 1 }} showsVerticalScrollIndicator={false}>
+            {isOpen && <LeagueClubsAccordion selectedClub={selectedClub}
+              onSelectClub={(club) => { onSelectClub(club); onClose(); }} />}
+          </ScrollView>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>

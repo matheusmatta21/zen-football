@@ -1,8 +1,9 @@
-import { Text, View, Image } from "react-native";
+import { Text, View } from "react-native";
 import { Button, useThemeColor } from "heroui-native";
 import { Check, ChevronLeft } from "lucide-react-native";
 
 import { Club, getClubLogo } from "@/components/tournaments";
+import CrestImage from "@/components/CrestImage";
 
 type ConfirmClubStepProps = {
   club: Club;
@@ -22,12 +23,7 @@ export default function ConfirmClubStep({
   return (
     <View className="w-full flex flex-col items-center justify-center gap-4 px-8">
       <View className="flex flex-col items-center justify-center gap-4">
-        <Image
-          source={
-            clubLogo ?? require("../../../../assets/images/logo-zen-football.png")
-          }
-          className="w-32 h-32 object-contain"
-        />
+        <CrestImage source={clubLogo} size={128} name={club.name} />
         <Text className="text-title text-center text-ink">
           {club.name}
         </Text>

@@ -9,13 +9,15 @@ import {
   type ReactNode,
 } from "react";
 
-import { CLUBS, ClubId } from "@/components/tournaments";
+import type { Club } from "@zen/types";
+import { parseStoredClub } from "@/utils/storedClub";
 
 const STORAGE_KEY = "@zen-football/selected-club";
 
 type SelectedClubContextValue = {
-  selectedClubId: ClubId | null;
-  selectClub: (clubId: ClubId) => void;
+  selectedClub: Club | null;
+  selectedClubId: number | null;
+  selectClub: (club: Club) => void;
   isHydrating: boolean;
 };
 
@@ -23,12 +25,8 @@ const SelectedClubContext = createContext<SelectedClubContextValue | null>(
   null,
 );
 
-function isKnownClubId(value: string | null): value is ClubId {
-  return CLUBS.some((club) => club.id === value);
-}
-
 export function SelectedClubProvider({ children }: { children: ReactNode }) {
-  const [selectedClubId, setSelectedClubId] = useState<ClubId | null>(null);
+  const [selectedClub, setSelectedClub] = useState<Club | null>(null);
   const [isHydrating, setIsHydrating] = useState(true);
 
   useEffect(() => {
@@ -37,10 +35,7 @@ export function SelectedClubProvider({ children }: { children: ReactNode }) {
     AsyncStorage.getItem(STORAGE_KEY)
       .then((storedClubId) => {
         if (!isActive) return;
-        if (isKnownClubId(storedClubId)) {
-          setSelectedClubId(storedClubId);
-          // console.log("Clube selecionado recuperado do AsyncStorage:", storedClubId);
-        }
+        setSelectedClub(parseStoredClub(storedClubId));
       })
       .catch((cause) => {
         console.error(cause);
@@ -55,17 +50,17 @@ export function SelectedClubProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const selectClub = useCallback((clubId: ClubId) => {
-    setSelectedClubId(clubId);
+  const selectClub = useCallback((club: Club) => {
+    setSelectedClub(club);
 
-    AsyncStorage.setItem(STORAGE_KEY, clubId).catch((cause) => {
+    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(club)).catch((cause) => {
       console.error(cause);
     });
   }, []);
 
   const value = useMemo(
-    () => ({ selectedClubId, selectClub, isHydrating }),
-    [selectedClubId, selectClub, isHydrating],
+    () => ({ selectedClub, selectedClubId: selectedClub?.id ?? null, selectClub, isHydrating }),
+    [selectedClub, selectClub, isHydrating],
   );
 
   return (

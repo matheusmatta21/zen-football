@@ -7,14 +7,15 @@ import type { MatchListMode } from "../utils/selectMatches";
 
 import CompetitionsMenu from "./CompetitionsMenu";
 import SelectClubsDialog from "./SelectClubsDialog";
-import { Club, ClubId, getClubLogo } from "./tournaments";
+import { Club, getClubLogo } from "./tournaments";
+import CrestImage from "./CrestImage";
 
 type HeaderProps = {
   competitions: FdCompetition[];
   selectedCompetitionIds: number[];
   onToggleCompetition: (competitionId: number) => void;
   selectedClub: Club;
-  onSelectClub: (clubId: ClubId) => void;
+  onSelectClub: (club: Club) => void;
   matchListMode: MatchListMode;
   onToggleMatchListMode: () => void;
 };
@@ -51,14 +52,7 @@ export default function Header({
             accessibilityLabel={`Clube: ${selectedClub.name}`}
             onPress={() => setIsClubsModalOpen(true)}
           >
-            {selectedClubLogo ? (
-              <Image
-                source={selectedClubLogo}
-                className="h-8 w-8 object-contain"
-              />
-            ) : (
-              <View className="h-7 w-7" />
-            )}
+            <CrestImage source={selectedClubLogo} size={32} name={selectedClub.name} />
           </Pressable>
         </View>
       </View>
@@ -87,7 +81,7 @@ export default function Header({
       <SelectClubsDialog
         isOpen={isClubsModalOpen}
         onClose={() => setIsClubsModalOpen(false)}
-        selectedClubId={selectedClub.id}
+        selectedClub={selectedClub}
         onSelectClub={onSelectClub}
       />
     </View>
