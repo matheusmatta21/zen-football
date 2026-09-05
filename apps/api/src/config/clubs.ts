@@ -1,7 +1,6 @@
-const ALLOWED_TEAM_IDS = new Set([
-  1044, 61, 57, 81, 4, 109, 1765, 1780, 1779,
-]);
+import { clubCatalog } from "../services/clubCatalog";
 
-export function isAllowedTeamId(teamId: number): boolean {
-  return ALLOWED_TEAM_IDS.has(teamId);
+export async function isAllowedTeamId(teamId: number): Promise<boolean> {
+  const catalog = await clubCatalog.get();
+  return catalog.leagues.some((league) => league.clubs.some((club) => club.id === teamId));
 }

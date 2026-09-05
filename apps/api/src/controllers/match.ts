@@ -12,7 +12,7 @@ function parseTeamId(rawTeamId: unknown): number | null {
 
   const teamId = Number(rawTeamId);
 
-  if (!Number.isInteger(teamId) || !isAllowedTeamId(teamId)) {
+  if (!Number.isSafeInteger(teamId) || teamId <= 0) {
     return null;
   }
 
@@ -31,6 +31,9 @@ export async function getTeamMatchesController(req: any, res: any) {
   }
 
   try {
+    if (!(await isAllowedTeamId(teamId))) {
+      return res.status(400).json({ error: "teamId is not supported" });
+    }
     const data = await getTeamMatches(teamId, season, status);
     res.json(data.matches.map(toMatch));
   } catch (error) {
@@ -49,6 +52,9 @@ export async function getCompetitionFromTeamController(req: any, res: any) {
   }
 
   try {
+    if (!(await isAllowedTeamId(teamId))) {
+      return res.status(400).json({ error: "teamId is not supported" });
+    }
     const competitions = await getCompetitionFromTeam(teamId);
     res.json(competitions);
   } catch (error) {

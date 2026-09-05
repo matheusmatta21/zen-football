@@ -1,6 +1,7 @@
-import { FdCompetition, FdMatchesResponse } from "@zen/types";
+import type { FdCompetition, FdMatchesResponse } from "@zen/types";
 import apiService from "./apiService";
 import { cached } from "./cache";
+import { clubCatalog } from "./clubCatalog";
 
 const AVAILABLE_PLAN = "TIER_ONE";
 
@@ -80,4 +81,8 @@ export async function getCompetitionFromTeam(teamId: number) {
     console.error("Error fetching competition from team:", error);
     throw error;
   }
+}
+
+export async function getTeamsFromCompetition(competitionId: number) {
+  return clubCatalog.getTeams(competitionId);
 }
