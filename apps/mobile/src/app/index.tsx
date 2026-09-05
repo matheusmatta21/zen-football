@@ -1,4 +1,4 @@
-import type { FdCompetition, Match } from "@zen/types";
+import type { Club, FdCompetition, Match } from "@zen/types";
 import { useThemeColor } from "heroui-native";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, AppState, Text } from "react-native";
@@ -6,7 +6,6 @@ import { ActivityIndicator, AppState, Text } from "react-native";
 import CollapsibleHeaderLayout from "../components/CollapsibleHeaderLayout";
 import Header from "../components/Header";
 import MatchCard from "../components/MatchCard";
-import { CLUBS } from "../components/tournaments";
 import { useSelectedClub } from "../contexts/SelectedClubContext";
 import { getTeamCompetitions, getTeamMatches } from "../services/footballData";
 import { selectMatches, type MatchListMode } from "../utils/selectMatches";
@@ -25,8 +24,17 @@ function hasMatchInProgress(matches: Match[], now: number) {
 }
 
 export default function Index() {
+  const { selectedClub, selectClub } = useSelectedClub();
+  return selectedClub ? (
+    <ClubMatches key={selectedClub.id} selectedClub={selectedClub} selectClub={selectClub} />
+  ) : null;
+}
+
+function ClubMatches({ selectedClub, selectClub }: {
+  selectedClub: Club;
+  selectClub: (club: Club) => void;
+}) {
   const muted = useThemeColor("muted");
-  const { selectedClubId, selectClub } = useSelectedClub();
   const [competitions, setCompetitions] = useState<FdCompetition[]>([]);
   const [selectedCompetitionIds, setSelectedCompetitionIds] = useState<
     number[]
@@ -42,9 +50,7 @@ export default function Index() {
   );
   const [now, setNow] = useState(() => Date.now());
 
-  const selectedClub =
-    CLUBS.find((club) => club.id === selectedClubId) ?? CLUBS[0];
-  const teamId = selectedClub.teamId;
+  const teamId = selectedClub.id;
 
   useEffect(() => {
     const subscription = AppState.addEventListener("change", (nextState) => {

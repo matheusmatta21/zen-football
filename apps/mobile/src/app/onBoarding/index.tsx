@@ -9,7 +9,7 @@ import Animated, {
 import { withUniwind } from "uniwind";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { CLUBS, ClubId } from "@/components/tournaments";
+import type { Club } from "@zen/types";
 import { useSelectedClub } from "@/contexts/SelectedClubContext";
 import WelcomeStep from "./_components/WelcomeStep";
 import SelectClubStep from "./_components/SelectClubStep";
@@ -39,9 +39,7 @@ export default function OnBoarding() {
   const { selectClub } = useSelectedClub();
   const [step, setStep] = useState<Step>("welcome");
   const [direction, setDirection] = useState<Direction>("forward");
-  const [selectedClubId, setSelectedClubId] = useState<ClubId | null>(null);
-
-  const selectedClub = CLUBS.find((club) => club.id === selectedClubId) ?? null;
+  const [selectedClub, setSelectedClub] = useState<Club | null>(null);
 
   const goToStep = (nextStep: Step, nextDirection: Direction) => {
     setDirection(nextDirection);
@@ -65,8 +63,8 @@ export default function OnBoarding() {
 
           {step === "selectClub" && (
             <SelectClubStep
-              selectedClubId={selectedClubId}
-              onSelectClub={setSelectedClubId}
+              selectedClub={selectedClub}
+              onSelectClub={setSelectedClub}
               onNext={() => goToStep("confirmClub", "forward")}
             />
           )}
@@ -74,7 +72,7 @@ export default function OnBoarding() {
           {step === "confirmClub" && selectedClub && (
             <ConfirmClubStep
               club={selectedClub}
-              onConfirm={() => selectClub(selectedClub.id)}
+              onConfirm={() => selectClub(selectedClub)}
               onBack={() => goToStep("selectClub", "back")}
             />
           )}
